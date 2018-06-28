@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  
+    xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xmlns:p="http://www.springframework.org/schema/p"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans  
+               http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">  
+ <bean id="addressBean" class=" com.bridgelabz.constructorinjection.Address">
+ <constructor-arg value="Anantapur"></constructor-arg>
+ <constructor-arg value="AP"></constructor-arg>
+ <constructor-arg value="India"></constructor-arg>
+ </bean>  
+ <bean id="employeeBean" class="com.bridgelabz.constructorinjection.Employee" scope="singleton" autowire="constructor">
+ <constructor-arg value="1" type="int"></constructor-arg>
+ <constructor-arg value="SasiKala"></constructor-arg>
+<!--  <constructor-arg ><ref bean="addressBean"/></constructor-arg> -->
+ 
+ </bean>
+
+ </beans>
