@@ -1,6 +1,6 @@
-package com.bridgelabz.registerlogin.bean;
+package com.bridgelabz.registerlogin.models;
 
-public class UserBean {
+public class User {
 	private int id;
 	private String firstName;
 	private String lastName;
@@ -8,7 +8,7 @@ public class UserBean {
 	private String emailId;
 	private String password;
 
-	public UserBean() {
+	public User() {
 	}
 
 	public int getId() {

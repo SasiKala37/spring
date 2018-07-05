@@ -1,4 +1,4 @@
-package com.bridgelabz.registerlogin.services;
+package com.bridgelabz.registerlogin.controllers;
 
 import java.io.IOException;
 import javax.servlet.Filter;
@@ -28,16 +28,13 @@ public class ValidationFilter implements Filter {
 	 * @see Filter#destroy()
 	 */
 	public void destroy() {
-		// TODO Auto-generated method stub
-	}
 
+	}
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		// TODO Auto-generated method stub
-		// place your code here
 		System.out.println("filter");
 		String password = request.getParameter("password");
 		if (Utility.validate(password)) {
@@ -53,7 +50,6 @@ public class ValidationFilter implements Filter {
 	 * @see Filter#init(FilterConfig)
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
-		// TODO Auto-generated method stub
 	}
 
 }

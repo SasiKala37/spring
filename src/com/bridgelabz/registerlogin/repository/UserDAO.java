@@ -8,16 +8,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.bridgelabz.registerlogin.bean.UserBean;
+import com.bridgelabz.registerlogin.models.User;
 import com.bridgelabz.registerlogin.util.DataSource;
 
 public class UserDAO {
 
-	public void saveUser(UserBean userBean) throws SQLException, IOException, PropertyVetoException, ClassNotFoundException {
-		/*Class.forName("com.mysql.jdbc.Driver");
-		Connection	connection=DriverManager.getConnection("jdbc:mysql://localhost:3306/user?useSSL=false","root","tiger");*/
+	public void saveUser(User userBean) throws SQLException, IOException, PropertyVetoException, ClassNotFoundException {
+		
 		Connection connection = DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = connection.prepareStatement("insert into register values(?,?,?,?,?,?)");
+		ResultSet resultSet=null;
 		preparedStatement.setInt(1, 0);
 		preparedStatement.setString(2, userBean.getFirstName());
 		preparedStatement.setString(3, userBean.getLastName());
@@ -25,23 +25,34 @@ public class UserDAO {
 		preparedStatement.setString(5, userBean.getEmailId());
 		preparedStatement.setString(6, userBean.getPassword());
 		preparedStatement.executeUpdate();
-		/*if(noOfRowsAffected > 0) {
-			return true;
-		} else {
-			return false;
-		}*/
+		closeResources(connection, preparedStatement, resultSet);
+		
 	}
-	public String getUserByUserName(String userName) throws SQLException, IOException, PropertyVetoException {
+	public User getUserByUserName(String userName) throws SQLException, IOException, PropertyVetoException {
 		Connection connection = DataSource.getInstance().getConnection();
 		ResultSet resultSet=null;
-		PreparedStatement preparedStatement=connection.prepareStatement("select user_name from register where user_name=?");
+		User user=new User();
+		PreparedStatement preparedStatement=connection.prepareStatement("select * from register where user_name=?");
 		preparedStatement.setString(1, userName);
-		int no=preparedStatement.executeUpdate();
-		if(no>0) {
-			return userName;
+		resultSet=preparedStatement.executeQuery();
+		if(resultSet.next()) {
+			user.setUserName(resultSet.getString(4));
+			user.setPassword(resultSet.getString(6));
+			closeResources(connection, preparedStatement, resultSet);
+			return user;
 		}
-		else {
-			return null;
+		return null;
+	}
+	public void closeResources(Connection connection,PreparedStatement preparedStatement,ResultSet resultSet) throws SQLException {
+		if(connection!=null) {
+			connection.close();
 		}
+		if(preparedStatement!=null) {
+			preparedStatement.close();
+		}
+		if(resultSet!=null) {
+			resultSet.close();
+		}
+		
 	}
 }

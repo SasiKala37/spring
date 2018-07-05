@@ -1,4 +1,4 @@
-package com.bridgelabz.registerlogin.services;
+package com.bridgelabz.registerlogin.controllers;
 
 import java.io.IOException;
 import javax.servlet.ServletException;

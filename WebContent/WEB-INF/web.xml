@@ -10,17 +10,17 @@
   </servlet-mapping>
   <servlet>
     <servlet-name>LoginHttpServlet</servlet-name>
-    <servlet-class>com.bridgelabz.services.LoginHttpServlet</servlet-class>
+    <servlet-class>com.bridgelabz.registerlogin.controllers.LoginHttpServlet</servlet-class>
   </servlet>
   <filter>
     <filter-name>ValidationFilter</filter-name>
-    <filter-class>com.bridgelabz.services.ValidationFilter</filter-class>
+    <filter-class>com.bridgelabz.registerlogin.controllers.ValidationFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>ValidationFilter</filter-name>
     <url-pattern>/RegisterHttpServlet</url-pattern>
   </filter-mapping>
-  <listener>
-    <listener-class>com.bridgelabz.services.SessionListener</listener-class>
+    <listener>
+    <listener-class>com.bridgelabz.registerlogin.controllers.SessionListener</listener-class>
   </listener>
 </web-app>

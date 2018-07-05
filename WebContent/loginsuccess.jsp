@@ -7,6 +7,11 @@
 <title>Insert title here</title>
 </head>
 <body>
+<%        
+    response.setHeader("Pragma", "No-cache");
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    response.setDateHeader("Expires", -1);
+%>
 	<div align="center">
 		<h1>Welcome to</h1>
 	<%	

@@ -1,4 +1,4 @@
-package com.bridgelabz.registerlogin.services;
+package com.bridgelabz.registerlogin.controllers;
 
 import java.beans.PropertyVetoException;
 import java.io.IOException;
@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.bridgelabz.registerlogin.bean.UserBean;
+import com.bridgelabz.registerlogin.models.User;
 import com.bridgelabz.registerlogin.repository.UserDAO;
 
 /**
@@ -37,31 +37,20 @@ public class RegisterHttpServlet extends HttpServlet {
 		 String emailId=request.getParameter("email");
 		 String password=request.getParameter("password");
 		 
-		 UserBean userBean=new UserBean();
-		 userBean.setFirstName(firstName);
-		 userBean.setLastName(lastName);
-		 userBean.setUserName(userName);
-		 userBean.setEmailId(emailId);
-		 userBean.setPassword(password);
+		 User user=new User();
+		 user.setFirstName(firstName);
+		 user.setLastName(lastName);
+		 user.setUserName(userName);
+		 user.setEmailId(emailId);
+		 user.setPassword(password);
 		 
 		 UserDAO userDAO=new UserDAO();
 		 try {
-			// boolean success;
-			userDAO.saveUser(userBean);
-			/*if(success) {
-				System.out.println(success);*/
-				response.sendRedirect("home.html");
-			//}
-			/*else {
-				 request.setAttribute("errMessage", success);
-				 response.sendRedirect("registerform.jsp");
-			}*/
+			userDAO.saveUser(user);			
+			response.sendRedirect("home.html");			
 		} catch (SQLException | PropertyVetoException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		 
-		 
-		//doGet(request, response);
 	}
 
 }
