@@ -140,6 +140,7 @@ body {
 						placeholder="Email" required="required">
 				</div>
 				<div class="form-group">
+				<p><label>${errMessage1}</label></p>
 					<input type="password" class="form-control" name="password"
 						placeholder="Password" required="required">
 				</div>

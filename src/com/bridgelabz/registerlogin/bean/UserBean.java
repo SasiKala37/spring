@@ -1,4 +1,4 @@
-package com.bridgelabz.bean;
+package com.bridgelabz.registerlogin.bean;
 
 public class UserBean {
 	private int id;

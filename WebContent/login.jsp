@@ -117,10 +117,11 @@ body {
 <body>
 	<div class="login-form">
 	<center>
-		<form action="/LoginHttpServlet" method="post">
+		<form action="LoginHttpServlet" method="post">
 			<h2>Login</h2>
+			<label>${errMessage}</label>
 			<div class="form-group">
-				<input type="text" class="form-control" name="user_name"
+				<input type="text" class="form-control" name="userName"
 					placeholder="User Name" required="required">
 			</div>
 			<div class="form-group">

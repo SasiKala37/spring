@@ -5,7 +5,7 @@
  * @version 1.0
  * @since 21-06-2018
  * */
-package com.bridgelabz.repository;
+package com.bridgelabz.registerlogin.util;
 
 import java.beans.PropertyVetoException;
 import java.io.IOException;

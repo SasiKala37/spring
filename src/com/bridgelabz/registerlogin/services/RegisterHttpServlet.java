@@ -1,4 +1,4 @@
-package com.bridgelabz.services;
+package com.bridgelabz.registerlogin.services;
 
 import java.beans.PropertyVetoException;
 import java.io.IOException;
@@ -10,13 +10,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.bridgelabz.bean.UserBean;
-import com.bridgelabz.repository.RegisterDAO;
+import com.bridgelabz.registerlogin.bean.UserBean;
+import com.bridgelabz.registerlogin.repository.UserDAO;
 
 /**
  * Servlet implementation class RegisterHttpServlet
  */
-@WebServlet(urlPatterns="/RegisterHttpServlet",loadOnStartup=1)
+@WebServlet(urlPatterns="/RegisterHttpServlet"/*loadOnStartup=1*/)
 public class RegisterHttpServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -27,14 +27,6 @@ public class RegisterHttpServlet extends HttpServlet {
         super();
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	/*protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-*/
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -52,17 +44,18 @@ public class RegisterHttpServlet extends HttpServlet {
 		 userBean.setEmailId(emailId);
 		 userBean.setPassword(password);
 		 
-		 RegisterDAO registerDAO=new RegisterDAO();
+		 UserDAO userDAO=new UserDAO();
 		 try {
-			boolean success=registerDAO.registerUser(userBean);
-			if(success) {
-				System.out.println(success);
+			// boolean success;
+			userDAO.saveUser(userBean);
+			/*if(success) {
+				System.out.println(success);*/
 				response.sendRedirect("home.html");
-			}
-			else {
+			//}
+			/*else {
 				 request.setAttribute("errMessage", success);
 				 response.sendRedirect("registerform.jsp");
-			}
+			}*/
 		} catch (SQLException | PropertyVetoException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}

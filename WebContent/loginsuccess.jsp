@@ -9,9 +9,13 @@
 <body>
 	<div align="center">
 		<h1>Welcome to</h1>
-		<h2>
-			<c:out value="${registerBean.userName}" />
-		</h2>
+	<%	
+	String userName=request.getSession().getAttribute("userName").toString();
+	out.print(userName);
+	%>
+		<form action="LogoutHttpServlet" method="post">
+		<input type="submit" value="LogOut">
+		</form>
 
 	</div>
 </body>
