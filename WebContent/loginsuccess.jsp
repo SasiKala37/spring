@@ -13,7 +13,7 @@
     response.setDateHeader("Expires", -1);
 %>
 	<div align="center">
-		<h1>Welcome to</h1>
+		<h1>Welcome to Flipcart</h1>
 	<%	
 	String userName=request.getSession().getAttribute("userName").toString();
 	out.print(userName);

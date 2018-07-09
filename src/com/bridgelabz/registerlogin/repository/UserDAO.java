@@ -13,11 +13,12 @@ import com.bridgelabz.registerlogin.util.DataSource;
 
 public class UserDAO {
 
-	public void saveUser(User userBean) throws SQLException, IOException, PropertyVetoException, ClassNotFoundException {
-		
+	public void saveUser(User userBean)
+			throws SQLException, IOException, PropertyVetoException, ClassNotFoundException {
+
 		Connection connection = DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = connection.prepareStatement("insert into register values(?,?,?,?,?,?)");
-		ResultSet resultSet=null;
+		ResultSet resultSet = null;
 		preparedStatement.setInt(1, 0);
 		preparedStatement.setString(2, userBean.getFirstName());
 		preparedStatement.setString(3, userBean.getLastName());
@@ -26,33 +27,37 @@ public class UserDAO {
 		preparedStatement.setString(6, userBean.getPassword());
 		preparedStatement.executeUpdate();
 		closeResources(connection, preparedStatement, resultSet);
-		
+
 	}
+
 	public User getUserByUserName(String userName) throws SQLException, IOException, PropertyVetoException {
 		Connection connection = DataSource.getInstance().getConnection();
-		ResultSet resultSet=null;
-		User user=new User();
-		PreparedStatement preparedStatement=connection.prepareStatement("select * from register where user_name=?");
+		ResultSet resultSet = null;
+		User user = null;
+		PreparedStatement preparedStatement = connection.prepareStatement("select * from register where user_name=?");
 		preparedStatement.setString(1, userName);
-		resultSet=preparedStatement.executeQuery();
-		if(resultSet.next()) {
+		resultSet = preparedStatement.executeQuery();
+		if (resultSet.next()) {
+			user = new User();
 			user.setUserName(resultSet.getString(4));
 			user.setPassword(resultSet.getString(6));
-			closeResources(connection, preparedStatement, resultSet);
-			return user;
+
 		}
-		return null;
+		closeResources(connection, preparedStatement, resultSet);
+		return user;
 	}
-	public void closeResources(Connection connection,PreparedStatement preparedStatement,ResultSet resultSet) throws SQLException {
-		if(connection!=null) {
+
+	public void closeResources(Connection connection, PreparedStatement preparedStatement, ResultSet resultSet)
+			throws SQLException {
+		if (connection != null) {
 			connection.close();
 		}
-		if(preparedStatement!=null) {
+		if (preparedStatement != null) {
 			preparedStatement.close();
 		}
-		if(resultSet!=null) {
+		if (resultSet != null) {
 			resultSet.close();
 		}
-		
+
 	}
 }
