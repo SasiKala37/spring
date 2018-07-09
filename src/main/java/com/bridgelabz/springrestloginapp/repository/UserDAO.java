@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
@@ -45,6 +47,31 @@ public class UserDAO {
 		closeResources(connection, preparedStatement, resultSet);
 		return user;
 	}
+	public List<User> listOfUsers() throws SQLException, IOException, PropertyVetoException {
+		Connection connection = DataSource.getInstance().getConnection();
+		ResultSet resultSet=null;
+		User user=null;
+		List<User> userList=new ArrayList<>();
+		PreparedStatement preparedStatement=connection.prepareStatement("select * from register");
+		resultSet=preparedStatement.executeQuery();
+		while(resultSet.next()) {
+			user=new User();
+			user.setId(resultSet.getInt(1));
+			user.setFirstName(resultSet.getString(2));
+			user.setLastName(resultSet.getString(3));
+			user.setUserName(resultSet.getString(4));
+			user.setEmailId(resultSet.getString(5));
+			user.setPassword(resultSet.getString(6));
+			userList.add(user);
+		}
+		return userList;
+	}
+	/*public void updateUser(User user) throws SQLException, IOException, PropertyVetoException {
+		Connection connection = DataSource.getInstance().getConnection();
+		ResultSet resultSet=null;
+		PreparedStatement preparedStatement=connection.prepareStatement("update register set id=?, first_name=?, last_name=?,email_id=?,password=? where user_name='"+user.getUserName()+"'");
+		
+	}*/
 	public void closeResources(Connection connection,PreparedStatement preparedStatement,ResultSet resultSet) throws SQLException {
 		if(connection!=null) {
 			connection.close();
