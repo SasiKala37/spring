@@ -20,38 +20,38 @@ public class UserServiceImplementation implements UserService {
 
 	@Override
 	public void registerUser(RegisterDTO registerDTO) throws RegisterException {
-		if (Utility.isValidateAllFields(registerDTO)) {
-			Optional<User> user1 = userRepository.findByEmailId(registerDTO.getEmailId());
-			if (!user1.isPresent()) {
+		Optional<User> user1 = userRepository.findByEmailId(registerDTO.getEmailId());
+		if (user1.isPresent()) {
+		throw new RegisterException("User could not register exception");
+		}
+		if (Utility.isValidateAllFields(registerDTO)) {	
 				User user = new User();
 				user.setId(registerDTO.getId());
 				user.setFirstName(registerDTO.getFirstName());
 				user.setLastName(registerDTO.getLastName());
 				user.setUserName(registerDTO.getUserName());
 				user.setEmailId(registerDTO.getEmailId());
-				BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();	
+				BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 				user.setPassword(encoder.encode(registerDTO.getPassword()));
 				user.setMobileNumber(registerDTO.getMobileNumber());
-				userRepository.save(user);
-			}
+				userRepository.save(user);			
 		}
 	}
-	/*public PasswordEncoder passwordEncoder() {
-	    return new BCryptPasswordEncoder();
-	}*/
+
 	@Override
 	public void loginUser(User user) throws LoginException {
 		Optional<User> user1 = userRepository.findByUserName(user.getUserName());
-		if (user1.isPresent()) {
-			if (user1.get().getPassword().equals(user.getPassword())) {
-				System.out.println("Login Successfully");
-			} else {
-				throw new LoginException("Incorrect password exception");
-			}
-		}
-		if(!user1.isPresent()) {
+		if (!user1.isPresent()) {
 			throw new LoginException("User not found Exception");
 		}
+
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		if (encoder.matches(user.getPassword(), user1.get().getPassword())) {
+			System.out.println("Login Successfully");
+		} else {
+			throw new LoginException("Incorrect password exception");
+		}
+
 	}
 
 }

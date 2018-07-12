@@ -9,7 +9,6 @@ import com.bridgelabz.fundoonote.model.RegisterDTO;
 public class Utility {
 
 	public static boolean isValidateAllFields(RegisterDTO registerDTO) throws RegisterException {
-		System.out.println("util");
 		if (!validateEmailAddress(registerDTO.getEmailId())) {
 			throw new RegisterException("emailid not valid  Exception");
 		} else if (!isValidUserName(registerDTO.getUserName())) {
