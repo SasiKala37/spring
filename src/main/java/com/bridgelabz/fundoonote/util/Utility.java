@@ -11,20 +11,16 @@ public class Utility {
 	public static boolean isValidateAllFields(RegisterDTO registerDTO) throws RegisterException {
 		System.out.println("util");
 		if (!validateEmailAddress(registerDTO.getEmailId())) {
-			throw new RegisterException("not a valid emailid Exception");
-			
+			throw new RegisterException("emailid not valid  Exception");
 		} else if (!isValidUserName(registerDTO.getUserName())) {
-			throw new RegisterException("Not a valid UserName Exception");
+			throw new RegisterException("UserName Not valid  Exception");
 		} else if (!validatePassword(registerDTO.getPassword())) {
-			throw new RegisterException("password is not valid Exception");
-		}
-		else if(!isValidMobileNumber(registerDTO.getMobileNumber())) {
-			throw new RegisterException("not a valid mobilenumber Exception");
-		}
-		else if(!isPasswordMatch(registerDTO.getPassword(), registerDTO.getConfirmPassword())) {
+			throw new RegisterException("password not valid Exception");
+		} else if (!isValidMobileNumber(registerDTO.getMobileNumber())) {
+			throw new RegisterException("mobilenumber not valid  Exception");
+		} else if (!isPasswordMatch(registerDTO.getPassword(), registerDTO.getConfirmPassword())) {
 			throw new RegisterException("password mismatch exception");
-		}
-		else {
+		} else {
 			return true;
 		}
 	}

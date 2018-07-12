@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bridgelabz.fundoonote.configuaration.SecurityConfig;
 import com.bridgelabz.fundoonote.exceptions.RegisterException;
 import com.bridgelabz.fundoonote.model.RegisterDTO;
+import com.bridgelabz.fundoonote.model.ResponseDTO;
 import com.bridgelabz.fundoonote.model.User;
 import com.bridgelabz.fundoonote.services.UserService;
 
@@ -29,14 +30,14 @@ public class UserController {
 	@Autowired
 	private SecurityConfig securityConfig;
 
-	/*
-	 * @Autowired private GlobalUserExceptionHandler globalUserExceptionHandler;
-	 */
 	@PostMapping("/register")
 	public ResponseEntity<?> registerUser(@RequestBody RegisterDTO registerDTO) throws RegisterException {
 		logger.info("Creating User : {}", registerDTO);
 
 		userService.registerUser(registerDTO);
+		ResponseDTO response=new ResponseDTO();
+		response.setMessage("Registered successfully");
+		response.setStatus(2);
 		return new ResponseEntity<>("Registered successfully", HttpStatus.CREATED);
 
 	}
@@ -48,9 +49,12 @@ public class UserController {
 		String token = securityConfig.createToken(user);
 		securityConfig.parseJwt(token);
 		System.out.println("Token: " + token);
-
-		 userService.loginUser(user);
-		return new ResponseEntity<>("Welcome " + user.getUserName(), HttpStatus.OK);
+		
+		userService.loginUser(user);
+		ResponseDTO response=new ResponseDTO();
+		response.setMessage("Login successfully");
+		response.setStatus(3);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 }

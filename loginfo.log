@@ -2313,3 +2313,180 @@ javax.security.auth.login.LoginException: Incorrect password exception
 2018-07-12 17:19:22.100  INFO 16035 --- [RMI TCP Connection(2)-127.0.0.1] ConfigServletWebServerApplicationContext : Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@1184ab05: startup date [Thu Jul 12 17:16:57 IST 2018]; root of context hierarchy
 2018-07-12 17:19:22.103  INFO 16035 --- [RMI TCP Connection(2)-127.0.0.1] o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans on shutdown
 2018-07-12 17:19:22.107  INFO 16035 --- [RMI TCP Connection(2)-127.0.0.1] org.mongodb.driver.connection            : Closed connection [connectionId{localValue:2, serverValue:50}] to localhost:27017 because the pool has been closed.
+2018-07-12 17:42:10.200 ERROR 16658 --- [main] o.s.b.c.l.LoggingApplicationListener     : Cannot set level: =DEBUG for 'com.bridgelabz.fundoonote'
+2018-07-12 17:42:10.266  INFO 16658 --- [main] c.b.fundoonote.FundoonoteApplication     : Starting FundoonoteApplication on bridgelabz with PID 16658 (/home/bridgelabz/fundoonotesapp/fundoonote/target/classes started by bridgelabz in /home/bridgelabz/fundoonotesapp/fundoonote)
+2018-07-12 17:42:10.266  INFO 16658 --- [main] c.b.fundoonote.FundoonoteApplication     : No active profile set, falling back to default profiles: default
+2018-07-12 17:42:10.294  INFO 16658 --- [main] ConfigServletWebServerApplicationContext : Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@22a637e7: startup date [Thu Jul 12 17:42:10 IST 2018]; root of context hierarchy
+2018-07-12 17:42:10.966  INFO 16658 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2018-07-12 17:42:10.979  INFO 16658 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2018-07-12 17:42:10.979  INFO 16658 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/8.5.31
+2018-07-12 17:42:10.982  INFO 16658 --- [localhost-startStop-1] o.a.catalina.core.AprLifecycleListener   : The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib]
+2018-07-12 17:42:11.040  INFO 16658 --- [localhost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2018-07-12 17:42:11.113  INFO 16658 --- [localhost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Servlet dispatcherServlet mapped to [/]
+2018-07-12 17:42:11.116  INFO 16658 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-07-12 17:42:11.116  INFO 16658 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-07-12 17:42:11.116  INFO 16658 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-07-12 17:42:11.116  INFO 16658 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'requestContextFilter' to: [/*]
+2018-07-12 17:42:11.343  INFO 16658 --- [main] org.mongodb.driver.cluster               : Cluster created with settings {hosts=[localhost:27017], mode=MULTIPLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
+2018-07-12 17:42:11.343  INFO 16658 --- [main] org.mongodb.driver.cluster               : Adding discovered server localhost:27017 to client view of cluster
+2018-07-12 17:42:11.375  INFO 16658 --- [cluster-ClusterId{value='5b47459bbcd27941122df259', description='null'}-localhost:27017] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:1, serverValue:51}] to localhost:27017
+2018-07-12 17:42:11.378  INFO 16658 --- [cluster-ClusterId{value='5b47459bbcd27941122df259', description='null'}-localhost:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[4, 0, 0]}, minWireVersion=0, maxWireVersion=7, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=1671503}
+2018-07-12 17:42:11.378  INFO 16658 --- [cluster-ClusterId{value='5b47459bbcd27941122df259', description='null'}-localhost:27017] org.mongodb.driver.cluster               : Discovered cluster type of STANDALONE
+2018-07-12 17:42:11.450  WARN 16658 --- [main] o.s.d.m.c.m.BasicMongoPersistentProperty : Customizing field name for id property not allowed! Custom name will not be considered!
+2018-07-12 17:42:11.994  INFO 16658 --- [main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2018-07-12 17:42:12.017  INFO 16658 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2018-07-12 17:42:12.019  INFO 16658 --- [main] c.b.fundoonote.FundoonoteApplication     : Started FundoonoteApplication in 1.976 seconds (JVM running for 2.326)
+2018-07-12 17:42:25.081  INFO 16658 --- [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring FrameworkServlet 'dispatcherServlet'
+2018-07-12 17:42:25.141  INFO 16658 --- [http-nio-8080-exec-2] c.b.f.controllers.UserController         : login  User : com.bridgelabz.fundoonote.model.User@50f4e9f8
+2018-07-12 17:42:25.225  INFO 16658 --- [http-nio-8080-exec-2] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:2, serverValue:52}] to localhost:27017
+2018-07-12 17:46:15.850  INFO 16658 --- [RMI TCP Connection(2)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2018-07-12 17:46:15.850  INFO 16658 --- [RMI TCP Connection(2)-127.0.0.1] ConfigServletWebServerApplicationContext : Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@22a637e7: startup date [Thu Jul 12 17:42:10 IST 2018]; root of context hierarchy
+2018-07-12 17:46:15.852  INFO 16658 --- [RMI TCP Connection(2)-127.0.0.1] o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans on shutdown
+2018-07-12 17:46:15.855  INFO 16658 --- [RMI TCP Connection(2)-127.0.0.1] org.mongodb.driver.connection            : Closed connection [connectionId{localValue:2, serverValue:52}] to localhost:27017 because the pool has been closed.
+2018-07-12 17:47:42.562 ERROR 16812 --- [main] o.s.b.c.l.LoggingApplicationListener     : Cannot set level: =DEBUG for 'com.bridgelabz.fundoonote'
+2018-07-12 17:47:42.632  INFO 16812 --- [main] c.b.fundoonote.FundoonoteApplication     : Starting FundoonoteApplication on bridgelabz with PID 16812 (/home/bridgelabz/fundoonotesapp/fundoonote/target/classes started by bridgelabz in /home/bridgelabz/fundoonotesapp/fundoonote)
+2018-07-12 17:47:42.633  INFO 16812 --- [main] c.b.fundoonote.FundoonoteApplication     : No active profile set, falling back to default profiles: default
+2018-07-12 17:47:42.663  INFO 16812 --- [main] ConfigServletWebServerApplicationContext : Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@76908cc0: startup date [Thu Jul 12 17:47:42 IST 2018]; root of context hierarchy
+2018-07-12 17:47:43.414  INFO 16812 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2018-07-12 17:47:43.428  INFO 16812 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2018-07-12 17:47:43.428  INFO 16812 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/8.5.31
+2018-07-12 17:47:43.432  INFO 16812 --- [localhost-startStop-1] o.a.catalina.core.AprLifecycleListener   : The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib]
+2018-07-12 17:47:43.476  INFO 16812 --- [localhost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2018-07-12 17:47:43.547  INFO 16812 --- [localhost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Servlet dispatcherServlet mapped to [/]
+2018-07-12 17:47:43.549  INFO 16812 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-07-12 17:47:43.550  INFO 16812 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-07-12 17:47:43.550  INFO 16812 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-07-12 17:47:43.550  INFO 16812 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'requestContextFilter' to: [/*]
+2018-07-12 17:47:43.760  INFO 16812 --- [main] org.mongodb.driver.cluster               : Cluster created with settings {hosts=[localhost:27017], mode=MULTIPLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
+2018-07-12 17:47:43.761  INFO 16812 --- [main] org.mongodb.driver.cluster               : Adding discovered server localhost:27017 to client view of cluster
+2018-07-12 17:47:43.794  INFO 16812 --- [cluster-ClusterId{value='5b4746e7bcd27941ac0064b0', description='null'}-localhost:27017] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:1, serverValue:53}] to localhost:27017
+2018-07-12 17:47:43.797  INFO 16812 --- [cluster-ClusterId{value='5b4746e7bcd27941ac0064b0', description='null'}-localhost:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[4, 0, 0]}, minWireVersion=0, maxWireVersion=7, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=1622453}
+2018-07-12 17:47:43.798  INFO 16812 --- [cluster-ClusterId{value='5b4746e7bcd27941ac0064b0', description='null'}-localhost:27017] org.mongodb.driver.cluster               : Discovered cluster type of STANDALONE
+2018-07-12 17:47:43.870  WARN 16812 --- [main] o.s.d.m.c.m.BasicMongoPersistentProperty : Customizing field name for id property not allowed! Custom name will not be considered!
+2018-07-12 17:47:44.434  INFO 16812 --- [main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2018-07-12 17:47:44.457  INFO 16812 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2018-07-12 17:47:44.460  INFO 16812 --- [main] c.b.fundoonote.FundoonoteApplication     : Started FundoonoteApplication in 2.067 seconds (JVM running for 2.418)
+2018-07-12 17:47:53.482  INFO 16812 --- [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring FrameworkServlet 'dispatcherServlet'
+2018-07-12 17:47:53.542  INFO 16812 --- [http-nio-8080-exec-2] c.b.f.controllers.UserController         : login  User : com.bridgelabz.fundoonote.model.User@6ea9cf60
+2018-07-12 17:47:53.627  INFO 16812 --- [http-nio-8080-exec-2] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:2, serverValue:54}] to localhost:27017
+2018-07-12 17:49:26.232  INFO 16812 --- [RMI TCP Connection(2)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2018-07-12 17:49:26.233  INFO 16812 --- [RMI TCP Connection(2)-127.0.0.1] ConfigServletWebServerApplicationContext : Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@76908cc0: startup date [Thu Jul 12 17:47:42 IST 2018]; root of context hierarchy
+2018-07-12 17:49:26.235  INFO 16812 --- [RMI TCP Connection(2)-127.0.0.1] o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans on shutdown
+2018-07-12 17:49:26.238  INFO 16812 --- [RMI TCP Connection(2)-127.0.0.1] org.mongodb.driver.connection            : Closed connection [connectionId{localValue:2, serverValue:54}] to localhost:27017 because the pool has been closed.
+2018-07-12 17:49:39.462 ERROR 16938 --- [main] o.s.b.c.l.LoggingApplicationListener     : Cannot set level: =DEBUG for 'com.bridgelabz.fundoonote'
+2018-07-12 17:49:39.527  INFO 16938 --- [main] c.b.fundoonote.FundoonoteApplication     : Starting FundoonoteApplication on bridgelabz with PID 16938 (/home/bridgelabz/fundoonotesapp/fundoonote/target/classes started by bridgelabz in /home/bridgelabz/fundoonotesapp/fundoonote)
+2018-07-12 17:49:39.528  INFO 16938 --- [main] c.b.fundoonote.FundoonoteApplication     : No active profile set, falling back to default profiles: default
+2018-07-12 17:49:39.555  INFO 16938 --- [main] ConfigServletWebServerApplicationContext : Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@1c93084c: startup date [Thu Jul 12 17:49:39 IST 2018]; root of context hierarchy
+2018-07-12 17:49:40.233  INFO 16938 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2018-07-12 17:49:40.246  INFO 16938 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2018-07-12 17:49:40.246  INFO 16938 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/8.5.31
+2018-07-12 17:49:40.249  INFO 16938 --- [localhost-startStop-1] o.a.catalina.core.AprLifecycleListener   : The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib]
+2018-07-12 17:49:40.301  INFO 16938 --- [localhost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2018-07-12 17:49:40.371  INFO 16938 --- [localhost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Servlet dispatcherServlet mapped to [/]
+2018-07-12 17:49:40.373  INFO 16938 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-07-12 17:49:40.374  INFO 16938 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-07-12 17:49:40.374  INFO 16938 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-07-12 17:49:40.374  INFO 16938 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'requestContextFilter' to: [/*]
+2018-07-12 17:49:40.593  INFO 16938 --- [main] org.mongodb.driver.cluster               : Cluster created with settings {hosts=[localhost:27017], mode=MULTIPLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
+2018-07-12 17:49:40.593  INFO 16938 --- [main] org.mongodb.driver.cluster               : Adding discovered server localhost:27017 to client view of cluster
+2018-07-12 17:49:40.625  INFO 16938 --- [cluster-ClusterId{value='5b47475cbcd279422acf1976', description='null'}-localhost:27017] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:1, serverValue:55}] to localhost:27017
+2018-07-12 17:49:40.628  INFO 16938 --- [cluster-ClusterId{value='5b47475cbcd279422acf1976', description='null'}-localhost:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[4, 0, 0]}, minWireVersion=0, maxWireVersion=7, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=1658764}
+2018-07-12 17:49:40.628  INFO 16938 --- [cluster-ClusterId{value='5b47475cbcd279422acf1976', description='null'}-localhost:27017] org.mongodb.driver.cluster               : Discovered cluster type of STANDALONE
+2018-07-12 17:49:40.701  WARN 16938 --- [main] o.s.d.m.c.m.BasicMongoPersistentProperty : Customizing field name for id property not allowed! Custom name will not be considered!
+2018-07-12 17:49:41.240  INFO 16938 --- [main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2018-07-12 17:49:41.263  INFO 16938 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2018-07-12 17:49:41.265  INFO 16938 --- [main] c.b.fundoonote.FundoonoteApplication     : Started FundoonoteApplication in 1.961 seconds (JVM running for 2.311)
+2018-07-12 17:50:32.157  INFO 16938 --- [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring FrameworkServlet 'dispatcherServlet'
+2018-07-12 17:50:32.222  INFO 16938 --- [http-nio-8080-exec-2] c.b.f.controllers.UserController         : login  User : com.bridgelabz.fundoonote.model.User@592d1fdd
+2018-07-12 17:50:32.307  INFO 16938 --- [http-nio-8080-exec-2] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:2, serverValue:56}] to localhost:27017
+2018-07-12 17:50:47.236  INFO 16938 --- [http-nio-8080-exec-3] c.b.f.controllers.UserController         : login  User : com.bridgelabz.fundoonote.model.User@1f042eaf
+2018-07-12 17:53:06.171  INFO 16938 --- [RMI TCP Connection(2)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2018-07-12 17:53:06.172  INFO 16938 --- [RMI TCP Connection(2)-127.0.0.1] ConfigServletWebServerApplicationContext : Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@1c93084c: startup date [Thu Jul 12 17:49:39 IST 2018]; root of context hierarchy
+2018-07-12 17:53:06.174  INFO 16938 --- [RMI TCP Connection(2)-127.0.0.1] o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans on shutdown
+2018-07-12 17:53:06.177  INFO 16938 --- [RMI TCP Connection(2)-127.0.0.1] org.mongodb.driver.connection            : Closed connection [connectionId{localValue:2, serverValue:56}] to localhost:27017 because the pool has been closed.
+2018-07-12 17:53:08.716 ERROR 17126 --- [main] o.s.b.c.l.LoggingApplicationListener     : Cannot set level: =DEBUG for 'com.bridgelabz.fundoonote'
+2018-07-12 17:53:08.786  INFO 17126 --- [main] c.b.fundoonote.FundoonoteApplication     : Starting FundoonoteApplication on bridgelabz with PID 17126 (/home/bridgelabz/fundoonotesapp/fundoonote/target/classes started by bridgelabz in /home/bridgelabz/fundoonotesapp/fundoonote)
+2018-07-12 17:53:08.787  INFO 17126 --- [main] c.b.fundoonote.FundoonoteApplication     : No active profile set, falling back to default profiles: default
+2018-07-12 17:53:08.816  INFO 17126 --- [main] ConfigServletWebServerApplicationContext : Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@3aefe5e5: startup date [Thu Jul 12 17:53:08 IST 2018]; root of context hierarchy
+2018-07-12 17:53:09.574  INFO 17126 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2018-07-12 17:53:09.588  INFO 17126 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2018-07-12 17:53:09.588  INFO 17126 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/8.5.31
+2018-07-12 17:53:09.592  INFO 17126 --- [localhost-startStop-1] o.a.catalina.core.AprLifecycleListener   : The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib]
+2018-07-12 17:53:09.638  INFO 17126 --- [localhost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2018-07-12 17:53:09.708  INFO 17126 --- [localhost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Servlet dispatcherServlet mapped to [/]
+2018-07-12 17:53:09.711  INFO 17126 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-07-12 17:53:09.711  INFO 17126 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-07-12 17:53:09.712  INFO 17126 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-07-12 17:53:09.712  INFO 17126 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'requestContextFilter' to: [/*]
+2018-07-12 17:53:09.909  INFO 17126 --- [main] org.mongodb.driver.cluster               : Cluster created with settings {hosts=[localhost:27017], mode=MULTIPLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
+2018-07-12 17:53:09.909  INFO 17126 --- [main] org.mongodb.driver.cluster               : Adding discovered server localhost:27017 to client view of cluster
+2018-07-12 17:53:09.943  INFO 17126 --- [cluster-ClusterId{value='5b47482dbcd27942e67452e3', description='null'}-localhost:27017] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:1, serverValue:57}] to localhost:27017
+2018-07-12 17:53:09.946  INFO 17126 --- [cluster-ClusterId{value='5b47482dbcd27942e67452e3', description='null'}-localhost:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[4, 0, 0]}, minWireVersion=0, maxWireVersion=7, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=1697393}
+2018-07-12 17:53:09.947  INFO 17126 --- [cluster-ClusterId{value='5b47482dbcd27942e67452e3', description='null'}-localhost:27017] org.mongodb.driver.cluster               : Discovered cluster type of STANDALONE
+2018-07-12 17:53:10.035  WARN 17126 --- [main] o.s.d.m.c.m.BasicMongoPersistentProperty : Customizing field name for id property not allowed! Custom name will not be considered!
+2018-07-12 17:53:10.593  INFO 17126 --- [main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2018-07-12 17:53:10.617  INFO 17126 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2018-07-12 17:53:10.619  INFO 17126 --- [main] c.b.fundoonote.FundoonoteApplication     : Started FundoonoteApplication in 2.071 seconds (JVM running for 2.415)
+2018-07-12 17:53:14.752  INFO 17126 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring FrameworkServlet 'dispatcherServlet'
+2018-07-12 17:53:14.815  INFO 17126 --- [http-nio-8080-exec-1] c.b.f.controllers.UserController         : login  User : com.bridgelabz.fundoonote.model.User@332279b
+2018-07-12 17:53:14.904  INFO 17126 --- [http-nio-8080-exec-1] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:2, serverValue:58}] to localhost:27017
+2018-07-12 17:53:14.916  INFO 17126 --- [http-nio-8080-exec-1] c.b.f.g.GlobalUserExceptionHandler       : Error occured: User not found Exception
+
+javax.security.auth.login.LoginException: User not found Exception
+	at com.bridgelabz.fundoonote.services.UserServiceImplementation.loginUser(UserServiceImplementation.java:50) ~[classes/:na]
+	at com.bridgelabz.fundoonote.controllers.UserController.loginUser(UserController.java:53) ~[classes/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_171]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:1.8.0_171]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.8.0_171]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[na:1.8.0_171]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:209) ~[spring-web-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:136) ~[spring-web-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:102) ~[spring-webmvc-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:877) ~[spring-webmvc-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:783) ~[spring-webmvc-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:991) ~[spring-webmvc-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:925) ~[spring-webmvc-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:974) [spring-webmvc-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:877) [spring-webmvc-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:661) [tomcat-embed-core-8.5.31.jar:8.5.31]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:851) [spring-webmvc-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:742) [tomcat-embed-core-8.5.31.jar:8.5.31]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231) [tomcat-embed-core-8.5.31.jar:8.5.31]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) [tomcat-embed-core-8.5.31.jar:8.5.31]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52) [tomcat-embed-websocket-8.5.31.jar:8.5.31]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) [tomcat-embed-core-8.5.31.jar:8.5.31]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) [tomcat-embed-core-8.5.31.jar:8.5.31]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99) [spring-web-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) [spring-web-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) [tomcat-embed-core-8.5.31.jar:8.5.31]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) [tomcat-embed-core-8.5.31.jar:8.5.31]
+	at org.springframework.web.filter.HttpPutFormContentFilter.doFilterInternal(HttpPutFormContentFilter.java:109) [spring-web-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) [spring-web-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) [tomcat-embed-core-8.5.31.jar:8.5.31]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) [tomcat-embed-core-8.5.31.jar:8.5.31]
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93) [spring-web-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) [spring-web-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) [tomcat-embed-core-8.5.31.jar:8.5.31]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) [tomcat-embed-core-8.5.31.jar:8.5.31]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200) [spring-web-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) [spring-web-5.0.7.RELEASE.jar:5.0.7.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) [tomcat-embed-core-8.5.31.jar:8.5.31]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) [tomcat-embed-core-8.5.31.jar:8.5.31]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:198) [tomcat-embed-core-8.5.31.jar:8.5.31]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96) [tomcat-embed-core-8.5.31.jar:8.5.31]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:496) [tomcat-embed-core-8.5.31.jar:8.5.31]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140) [tomcat-embed-core-8.5.31.jar:8.5.31]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81) [tomcat-embed-core-8.5.31.jar:8.5.31]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87) [tomcat-embed-core-8.5.31.jar:8.5.31]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342) [tomcat-embed-core-8.5.31.jar:8.5.31]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:803) [tomcat-embed-core-8.5.31.jar:8.5.31]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66) [tomcat-embed-core-8.5.31.jar:8.5.31]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:790) [tomcat-embed-core-8.5.31.jar:8.5.31]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1468) [tomcat-embed-core-8.5.31.jar:8.5.31]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) [tomcat-embed-core-8.5.31.jar:8.5.31]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149) [na:1.8.0_171]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624) [na:1.8.0_171]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-8.5.31.jar:8.5.31]
+	at java.lang.Thread.run(Thread.java:748) [na:1.8.0_171]
+

@@ -38,13 +38,16 @@ public class UserServiceImplementation implements UserService {
 
 	@Override
 	public void loginUser(User user) throws LoginException {
-		Optional<User> user1 = userRepository.findByEmailId(user.getEmailId());
+		Optional<User> user1 = userRepository.findByUserName(user.getUserName());
 		if (user1.isPresent()) {
 			if (user1.get().getPassword().equals(user.getPassword())) {
 				System.out.println("Login Successfully");
 			} else {
 				throw new LoginException("Incorrect password exception");
 			}
+		}
+		if(!user1.isPresent()) {
+			throw new LoginException("User not found Exception");
 		}
 	}
 
