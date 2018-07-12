@@ -6,7 +6,7 @@ import javax.security.auth.login.LoginException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.bridgelabz.fundoonote.exceptions.RegisterException;
 import com.bridgelabz.fundoonote.model.RegisterDTO;
 import com.bridgelabz.fundoonote.model.User;
@@ -29,13 +29,16 @@ public class UserServiceImplementation implements UserService {
 				user.setLastName(registerDTO.getLastName());
 				user.setUserName(registerDTO.getUserName());
 				user.setEmailId(registerDTO.getEmailId());
-				user.setPassword(registerDTO.getPassword());
+				BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();	
+				user.setPassword(encoder.encode(registerDTO.getPassword()));
 				user.setMobileNumber(registerDTO.getMobileNumber());
 				userRepository.save(user);
 			}
 		}
 	}
-
+	/*public PasswordEncoder passwordEncoder() {
+	    return new BCryptPasswordEncoder();
+	}*/
 	@Override
 	public void loginUser(User user) throws LoginException {
 		Optional<User> user1 = userRepository.findByUserName(user.getUserName());

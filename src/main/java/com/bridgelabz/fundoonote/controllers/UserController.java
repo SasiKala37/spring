@@ -38,7 +38,7 @@ public class UserController {
 		ResponseDTO response=new ResponseDTO();
 		response.setMessage("Registered successfully");
 		response.setStatus(2);
-		return new ResponseEntity<>("Registered successfully", HttpStatus.CREATED);
+		return new ResponseEntity<>(response, HttpStatus.CREATED);
 
 	}
 
@@ -54,6 +54,7 @@ public class UserController {
 		ResponseDTO response=new ResponseDTO();
 		response.setMessage("Login successfully");
 		response.setStatus(3);
+		logger.info("Response message:", response);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
