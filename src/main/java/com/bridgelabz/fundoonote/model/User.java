@@ -12,7 +12,7 @@ public class User {
 	private String firstName;
 	private String lastName;
 	private String password;
-	private long mobileNumber;
+	private String mobileNumber;
 	
 	public User() {}
 	public int getId() {
@@ -51,10 +51,10 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public long getMobileNumber() {
+	public String getMobileNumber() {
 		return mobileNumber;
 	}
-	public void setMobileNumber(long mobileNumber) {
+	public void setMobileNumber(String mobileNumber) {
 		this.mobileNumber = mobileNumber;
 	}
 

@@ -1,6 +1,8 @@
-package com.bridgelabz.fundoonote.services;
+package com.bridgelabz.fundoonote.configuaration;
 
-import java.sql.Date;
+import java.util.Date;
+
+import org.springframework.stereotype.Service;
 
 import com.bridgelabz.fundoonote.model.User;
 
@@ -8,15 +10,15 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-
-public class TokenServices {
-	final static String KEY = "sowjanya";
+@Service
+public class SecurityConfig {
+	final static String KEY = "sasi";
 
 	public String createToken(User user) {
 		SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 		String subject = user.getEmailId();
 		String issuer = user.getUserName();
-		Date date = new Date(0);
+		Date date = new Date();
 
 		JwtBuilder builder = Jwts.builder().setSubject(subject).setIssuedAt(date).setIssuer(issuer)
 				.signWith(signatureAlgorithm, KEY);

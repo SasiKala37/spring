@@ -10,5 +10,6 @@ import com.bridgelabz.fundoonote.model.User;
 public interface UserRepository extends MongoRepository<User,String> {
  
 	public  Optional<User> findByUserName(String userName);
-    
+    public Optional<User> findByEmailId(String emailId);
+    public void save(Optional<User> user);
 }
