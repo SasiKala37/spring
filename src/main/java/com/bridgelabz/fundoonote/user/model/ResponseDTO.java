@@ -1,7 +1,9 @@
-package com.bridgelabz.fundoonote.model;
+package com.bridgelabz.fundoonote.user.model;
 
 public class ResponseDTO {
+
 	private String message;
+
 	private int status;
 
 	public String getMessage() {
@@ -18,11 +20,6 @@ public class ResponseDTO {
 
 	public void setStatus(int status) {
 		this.status = status;
-	}
-
-	@Override
-	public String toString() {
-		return "ResponseDTO [message=" + message + ", status=" + status + "]";
 	}
 
 }

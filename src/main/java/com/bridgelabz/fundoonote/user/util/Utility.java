@@ -1,26 +1,35 @@
-package com.bridgelabz.fundoonote.util;
+package com.bridgelabz.fundoonote.user.util;
 
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.bridgelabz.fundoonote.exceptions.RegisterException;
-import com.bridgelabz.fundoonote.model.RegisterDTO;
+import com.bridgelabz.fundoonote.user.exceptions.RegistrationException;
+import com.bridgelabz.fundoonote.user.model.LoginDTO;
+import com.bridgelabz.fundoonote.user.model.RegistrationDTO;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 public class Utility {
 
-	public static boolean isValidateAllFields(RegisterDTO registerDTO) throws RegisterException {
+	private Utility() {
+
+	}
+
+	public static void isValidateAllFields(RegistrationDTO registerDTO) throws RegistrationException {
 		if (!validateEmailAddress(registerDTO.getEmailId())) {
-			throw new RegisterException("emailid not valid  Exception");
+			throw new RegistrationException("emailid not valid  Exception");
 		} else if (!isValidUserName(registerDTO.getUserName())) {
-			throw new RegisterException("UserName Not valid  Exception");
+			throw new RegistrationException("UserName Not valid  Exception");
 		} else if (!validatePassword(registerDTO.getPassword())) {
-			throw new RegisterException("password not valid Exception");
+			throw new RegistrationException("password not valid Exception");
 		} else if (!isValidMobileNumber(registerDTO.getMobileNumber())) {
-			throw new RegisterException("mobilenumber not valid  Exception");
+			throw new RegistrationException("mobilenumber not valid  Exception");
 		} else if (!isPasswordMatch(registerDTO.getPassword(), registerDTO.getConfirmPassword())) {
-			throw new RegisterException("password mismatch exception");
-		} else {
-			return true;
+			throw new RegistrationException("password mismatch exception");
 		}
 	}
 
@@ -28,10 +37,8 @@ public class Utility {
 		Pattern emailNamePtrn = Pattern
 				.compile("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 		Matcher mtch = emailNamePtrn.matcher(emailId);
-		if (mtch.matches()) {
-			return true;
-		}
-		return false;
+		return mtch.matches();
+
 	}
 
 	public static boolean validatePassword(String password) {
@@ -56,6 +63,21 @@ public class Utility {
 
 	public static boolean isPasswordMatch(String password, String confirmPassword) {
 		return password.equals(confirmPassword);
+	}
+
+	public String createToken(LoginDTO loginDTO) {
+		final String key = "sasi";
+		SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+		String subject = loginDTO.getEmailId();
+		Date date = new Date();
+
+		JwtBuilder builder = Jwts.builder().setSubject(subject).setIssuedAt(date).signWith(signatureAlgorithm, key);
+		return builder.compact();
+	}
+
+	public Claims parseJwt(String jwt) {
+		final String key = "sasi";
+		return Jwts.parser().setSigningKey(key).parseClaimsJws(jwt).getBody();
 	}
 
 }

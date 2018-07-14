@@ -1,4 +1,4 @@
-package com.bridgelabz.fundoonote.globalexceptionhandler;
+package com.bridgelabz.fundoonote.user.globalexceptionhandler;
 
 import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;
@@ -8,17 +8,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import com.bridgelabz.fundoonote.exceptions.RegisterException;
-import com.bridgelabz.fundoonote.model.ResponseDTO;
+
+import com.bridgelabz.fundoonote.user.exceptions.RegistrationException;
+import com.bridgelabz.fundoonote.user.model.ResponseDTO;
 
 @ControllerAdvice
 public class GlobalUserExceptionHandler {
-	
-	
+		
 	private final Logger logger = LoggerFactory.getLogger(GlobalUserExceptionHandler.class);
 
-	@ExceptionHandler(RegisterException.class)
-	public ResponseEntity<?> handleRegistrationException(RegisterException exception) {
+	@ExceptionHandler(RegistrationException.class)
+	public ResponseEntity<ResponseDTO> handleRegistrationException(RegistrationException exception) {
 		logger.info("Error occured for: "+ exception.getMessage(), exception);
 		ResponseDTO response=new ResponseDTO();
 	    response.setMessage(exception.getMessage());
@@ -28,7 +28,7 @@ public class GlobalUserExceptionHandler {
 	}
 
 	@ExceptionHandler(LoginException.class)
-	public ResponseEntity<?> handleLoginActivationException(LoginException exception) {
+	public ResponseEntity<ResponseDTO> handleLoginActivationException(LoginException exception) {
 		logger.info("Error occured: " + exception.getMessage(), exception);
 		ResponseDTO response=new ResponseDTO();
 		response.setMessage(exception.getMessage());
@@ -45,7 +45,7 @@ public class GlobalUserExceptionHandler {
 	 * @return
 	 */
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<?> handleException(Exception exception, HttpServletRequest request) {
+	public ResponseEntity<ResponseDTO> handleException(Exception exception, HttpServletRequest request) {
 		logger.error("Error occured for: "+ exception.getMessage(), exception);
 		ResponseDTO response=new ResponseDTO();
 		response.setMessage("Something went wrong");

@@ -1,16 +1,19 @@
-package com.bridgelabz.fundoonote.model;
+package com.bridgelabz.fundoonote.user.model;
 
-import org.springframework.data.annotation.Id;
-
-public class RegisterDTO {
-	@Id
+public class RegistrationDTO {
+	
 	private String emailId;
-	private int id;
+
 	private String userName;
+
 	private String firstName;
+
 	private String lastName;
+
 	private String password;
+
 	private String confirmPassword;
+
 	private String mobileNumber;
 
 	public String getEmailId() {
@@ -19,14 +22,6 @@ public class RegisterDTO {
 
 	public void setEmailId(String emailId) {
 		this.emailId = emailId;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getUserName() {
