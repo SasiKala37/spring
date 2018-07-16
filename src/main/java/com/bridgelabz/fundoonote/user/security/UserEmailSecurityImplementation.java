@@ -21,7 +21,7 @@ public class UserEmailSecurityImplementation implements UserEmailSecurity {
 	    MimeMessageHelper message=new MimeMessageHelper(mimeMessage);
 	    
 	        message.setTo(mailDTO.getToMailAddress());
-	        message.setSubject(mailDTO.getSubject());
+	        message.setSubject(mailDTO.getSalutation()+"\n"+"\n"+mailDTO.getSubject());
 	        message.setText(mailDTO.getBody()+"\n"+"\n"+mailDTO.getMailSign());
 	        emailSender.send(mimeMessage);      
 	    }
