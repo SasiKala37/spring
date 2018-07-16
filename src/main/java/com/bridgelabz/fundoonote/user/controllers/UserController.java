@@ -19,6 +19,7 @@ import com.bridgelabz.fundoonote.user.exceptions.RegistrationException;
 import com.bridgelabz.fundoonote.user.exceptions.UserActivationException;
 import com.bridgelabz.fundoonote.user.model.LoginDTO;
 import com.bridgelabz.fundoonote.user.model.RegistrationDTO;
+import com.bridgelabz.fundoonote.user.model.ResetPasswordDTO;
 import com.bridgelabz.fundoonote.user.model.ResponseDTO;
 import com.bridgelabz.fundoonote.user.services.UserService;
 
@@ -69,10 +70,29 @@ public class UserController {
 		
 		userService.setActivationStatus(token);
 		ResponseDTO responseDTO = new ResponseDTO();
-		responseDTO.setMessage("User activation");
+		responseDTO.setMessage("User activated successfully");
 		
 		return new ResponseEntity<>(responseDTO, HttpStatus.OK);
 
 	}
+	@PostMapping("/forgotPassword")
+	public ResponseEntity<ResponseDTO> forgotPassword(@RequestBody String emailId,HttpServletRequest request) throws RegistrationException, MessagingException{
+		logger.info("Reset the password");
+		userService.forgotPassword(emailId, request.getRequestURI());
+		ResponseDTO responseDTO = new ResponseDTO();
+		responseDTO.setMessage("send the user mailid to reset password");
+		
+		return new ResponseEntity<>(responseDTO, HttpStatus.OK);
 
+	}
+	
+	@PostMapping("/resetPassword")
+	public ResponseEntity<ResponseDTO> resetPassword(@RequestBody ResetPasswordDTO resetPasswordDTO,@RequestParam("token") String token) throws UserActivationException, RegistrationException{
+		
+		userService.resetPassword(resetPasswordDTO, token);
+		ResponseDTO responseDTO = new ResponseDTO();
+		responseDTO.setMessage("reset the password successfully");
+		logger.info("Reset password done successfully");
+		return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+	}
 }

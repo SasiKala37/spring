@@ -13,9 +13,9 @@ import com.bridgelabz.fundoonote.user.exceptions.UserActivationException;
 import com.bridgelabz.fundoonote.user.model.LoginDTO;
 import com.bridgelabz.fundoonote.user.model.MailDTO;
 import com.bridgelabz.fundoonote.user.model.RegistrationDTO;
+import com.bridgelabz.fundoonote.user.model.ResetPasswordDTO;
 import com.bridgelabz.fundoonote.user.model.User;
 import com.bridgelabz.fundoonote.user.repository.UserRepository;
-import com.bridgelabz.fundoonote.user.security.SecurityConfig;
 import com.bridgelabz.fundoonote.user.security.UserEmailSecurity;
 import com.bridgelabz.fundoonote.user.util.Utility;
 
@@ -55,19 +55,20 @@ public class UserServiceImplementation implements UserService {
 		user.setMobileNumber(registerDTO.getMobileNumber());
 
 		userRepository.save(user);
+		
 		Optional<User> optionalUser1 = userRepository.findByEmailId(registerDTO.getEmailId());
-		SecurityConfig securityConfig = new SecurityConfig();
-		String token = securityConfig.createToken(optionalUser1.get().getId());
+
+		String token = Utility.createToken(optionalUser1.get().getId());
 
 		MailDTO mailDTO = new MailDTO();
 		mailDTO.setId(user.getId());
 		mailDTO.setToMailAddress(registerDTO.getEmailId());
-		mailDTO.setSubject("Hi " + registerDTO.getFirstName());
-		mailDTO.setBody("Activate your accout click on this link: http://localhost:8080" + uri + "/" + token);
+		mailDTO.setSubject("Registration Verification mail");
+		mailDTO.setSalutation("Hi " + optionalUser.get().getFirstName());
+		mailDTO.setBody("Activate your accout click on this link: http://localhost:8080" + uri + "?token=" + token);
 		mailDTO.setMailSign("\nThank you \n SasiKala G \n Bridge Labz \n Mumbai");
 
 		userEmailSecurity.sendEmail(mailDTO);
-		// setActivationStatus(mailDTO.getId(), token);
 
 	}
 
@@ -84,14 +85,35 @@ public class UserServiceImplementation implements UserService {
 		if (!encoder.matches(loginDTO.getPassword(), optionalUser.get().getPassword())) {
 			throw new LoginException("Incorrect password exception");
 		}
-		SecurityConfig securityConfig = new SecurityConfig();
-		String token = securityConfig.createToken(optionalUser.get().getId());
+
+		String token = Utility.createToken(optionalUser.get().getId());
 
 		MailDTO mailDTO = new MailDTO();
 
 		mailDTO.setId(optionalUser.get().getId());
 		mailDTO.setToMailAddress(loginDTO.getEmailId());
-		mailDTO.setSubject("Hi " + optionalUser.get().getFirstName());
+		mailDTO.setSubject("Login Verification mail");
+		mailDTO.setSalutation("Hi " + optionalUser.get().getFirstName());
+		mailDTO.setBody("Activate your accout click on this link: http://localhost:8080" + uri + "?token=" + token);
+		mailDTO.setMailSign("\nThank you \n SasiKala G \n Bridge Labz \n Mumbai");
+
+		userEmailSecurity.sendEmail(mailDTO);
+
+	}
+
+	@Override
+	public void forgotPassword(String emailId, String uri) throws RegistrationException, MessagingException {
+		System.out.println(emailId);
+		Optional<User> optionalUser = userRepository.findByEmailId(emailId);
+		System.out.println(optionalUser.get().getEmailId());
+		String token = Utility.createToken(optionalUser.get().getId());
+
+		MailDTO mailDTO = new MailDTO();
+
+		mailDTO.setId(optionalUser.get().getId());
+		mailDTO.setToMailAddress(emailId);
+		mailDTO.setSubject("Reset password Verification mail");
+		mailDTO.setSalutation("Hi " + optionalUser.get().getFirstName());
 		mailDTO.setBody("Activate your accout click on this link: http://localhost:8080" + uri + "?token=" + token);
 		mailDTO.setMailSign("\nThank you \n SasiKala G \n Bridge Labz \n Mumbai");
 
@@ -101,10 +123,9 @@ public class UserServiceImplementation implements UserService {
 
 	@Override
 	public void setActivationStatus(String token) throws UserActivationException {
-		SecurityConfig securityConfig = new SecurityConfig();
-		//String jwtToken = securityConfig.createToken();
-		Claims claim = securityConfig.parseJwt(token);
-System.out.println(claim.getId());
+
+		Claims claim = Utility.parseJwt(token);
+
 		Optional<User> optionalUser = userRepository.findById(claim.getId());
 
 		if (!optionalUser.isPresent()) {
@@ -116,4 +137,28 @@ System.out.println(claim.getId());
 		userRepository.save(user);
 	}
 
+	@Override
+	public void resetPassword(ResetPasswordDTO resetPasswordDTO, String token)
+			throws UserActivationException, RegistrationException {
+		Claims claim = Utility.parseJwt(token);
+
+		if (!Utility.validatePassword(resetPasswordDTO.getNewPassword())) {
+			throw new RegistrationException("password not valid Exception");
+		}
+
+		if (!Utility.isPasswordMatch(resetPasswordDTO.getNewPassword(), resetPasswordDTO.getConfirmPassword())) {
+			throw new RegistrationException("confirm password mismatch with new password Exception");
+		}
+
+		Optional<User> optionalUser = userRepository.findById(claim.getId());
+
+		if (!optionalUser.isPresent()) {
+			throw new RegistrationException("User not redistered, please register");
+		}
+
+		User user = optionalUser.get();
+		user.setPassword(resetPasswordDTO.getNewPassword());
+		userRepository.save(user);
+
+	}
 }

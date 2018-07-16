@@ -75,9 +75,20 @@ public class Utility {
 		return builder.compact();
 	}
 
-	public Claims parseJwt(String jwt) {
-		final String key = "sasi";
-		return Jwts.parser().setSigningKey(key).parseClaimsJws(jwt).getBody();
+	public static String createToken(String id) {
+		final String KEY = "sasi";
+		SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+		Date startTime = new Date();
+		Date expireTime = new Date(startTime.getTime() + (1000 * 60 * 60 * 24));
+
+		JwtBuilder builder = Jwts.builder().setId(id).setIssuedAt(startTime).setExpiration(expireTime)
+				.signWith(signatureAlgorithm, KEY);
+		return builder.compact();
+	}
+
+	public static Claims parseJwt(String jwt) {
+		final String KEY = "sasi";
+		return Jwts.parser().setSigningKey(KEY).parseClaimsJws(jwt).getBody();
 	}
 
 }

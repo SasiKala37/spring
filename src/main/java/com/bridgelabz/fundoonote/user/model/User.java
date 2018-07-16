@@ -19,7 +19,7 @@ public class User {
 
 	private String mobileNumber;
 	private boolean isActivate;
-	
+
 	public boolean isActivate() {
 		return isActivate;
 	}

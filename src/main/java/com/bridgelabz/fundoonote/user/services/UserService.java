@@ -9,6 +9,7 @@ import com.bridgelabz.fundoonote.user.exceptions.RegistrationException;
 import com.bridgelabz.fundoonote.user.exceptions.UserActivationException;
 import com.bridgelabz.fundoonote.user.model.LoginDTO;
 import com.bridgelabz.fundoonote.user.model.RegistrationDTO;
+import com.bridgelabz.fundoonote.user.model.ResetPasswordDTO;
 @Service
 public interface UserService {
 	/**
@@ -34,4 +35,6 @@ public interface UserService {
 	 */
 	void loginUser(LoginDTO loginDTO,String uri) throws LoginException, MessagingException, UserActivationException;
 	public void setActivationStatus(String token) throws UserActivationException;
+	public void resetPassword(ResetPasswordDTO resetPasswordDTO,String token) throws UserActivationException, RegistrationException;
+	public void forgotPassword(String emailId,String uri) throws RegistrationException, MessagingException;
 }
