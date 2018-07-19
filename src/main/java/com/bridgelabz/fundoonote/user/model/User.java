@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
 	@Id
 	private String id;
+
 	private String emailId;
 
 	private String userName;
@@ -18,6 +19,7 @@ public class User {
 	private String password;
 
 	private String mobileNumber;
+
 	private boolean isActivate;
 
 	public boolean isActivate() {

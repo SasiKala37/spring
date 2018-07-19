@@ -5,7 +5,10 @@ import java.util.Optional;
 import javax.mail.MessagingException;
 import javax.security.auth.login.LoginException;
 
+import org.bson.types.ObjectId;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import com.bridgelabz.fundoonote.user.exceptions.RegistrationException;
@@ -15,8 +18,8 @@ import com.bridgelabz.fundoonote.user.model.MailDTO;
 import com.bridgelabz.fundoonote.user.model.RegistrationDTO;
 import com.bridgelabz.fundoonote.user.model.ResetPasswordDTO;
 import com.bridgelabz.fundoonote.user.model.User;
+import com.bridgelabz.fundoonote.user.producer.IProducer;
 import com.bridgelabz.fundoonote.user.repository.UserRepository;
-import com.bridgelabz.fundoonote.user.security.UserEmailSecurity;
 import com.bridgelabz.fundoonote.user.util.Utility;
 
 import io.jsonwebtoken.Claims;
@@ -30,41 +33,63 @@ public class UserServiceImplementation implements UserService {
 
 	@Autowired
 	private PasswordEncoder encoder;
+	
 	@Autowired
-	private UserEmailSecurity userEmailSecurity;
-
+	private IProducer producer;
+	
+	@Autowired
+	private Environment environment;
+	
+	@Autowired
+	private ModelMapper modelMapper;
+	
 	@Override
 	public void registerUser(RegistrationDTO registerDTO, String uri)
 			throws RegistrationException, MessagingException, UserActivationException {
+		
+		Utility.isValidateAllFields(registerDTO);
 
 		Optional<User> optionalUser = userRepository.findByEmailId(registerDTO.getEmailId());
 
 		if (optionalUser.isPresent()) {
-			throw new RegistrationException("User already registerwith this email id exception");
+			throw new RegistrationException("User already registerwith this email id ");
 		}
+		
+		registerDTO.setPassword(encoder.encode(registerDTO.getPassword()));
+		
+		User user=new User();
+		user.setId("1");
+		user = modelMapper.map(registerDTO,User.class);
 
-		Utility.isValidateAllFields(registerDTO);
-
-		User user = new User();
-
-		user.setFirstName(registerDTO.getFirstName());
+		/*user.setFirstName(registerDTO.getFirstName());
 		user.setLastName(registerDTO.getLastName());
 		user.setUserName(registerDTO.getUserName());
 		user.setEmailId(registerDTO.getEmailId());
 		user.setPassword(encoder.encode(registerDTO.getPassword()));
-		user.setMobileNumber(registerDTO.getMobileNumber());
-
+		user.setMobileNumber(registerDTO.getMobileNumber());*/
+		
 		userRepository.save(user);
 
 		Optional<User> optionalUser1 = userRepository.findByEmailId(registerDTO.getEmailId());
+		if(!optionalUser1.isPresent()) {
+			throw new RegistrationException("user doesnot save in the database");
+		}
 		sendEmailMessage(uri, optionalUser1);
 
 	}
 
 	@Override
-	public void loginUser(LoginDTO loginDTO, String uri)
-			throws LoginException, UserActivationException, MessagingException {
-
+	public String loginUser(LoginDTO loginDTO)
+			throws LoginException, UserActivationException, MessagingException, RegistrationException {
+		
+		if(!Utility.validateEmailAddress(loginDTO.getEmailId())) {
+			throw new LoginException("Email not valid");
+		}
+		
+		if(!Utility.validatePassword(loginDTO.getPassword())) {
+			throw new LoginException("Password not valid");
+		}
+		
 		Optional<User> optionalUser = userRepository.findByEmailId(loginDTO.getEmailId());
 
 		if (!optionalUser.isPresent()) {
@@ -74,13 +99,17 @@ public class UserServiceImplementation implements UserService {
 		if (!encoder.matches(loginDTO.getPassword(), optionalUser.get().getPassword())) {
 			throw new LoginException("Incorrect password exception");
 		}
-		sendEmailMessage(uri, optionalUser);
-
+		
+		if(!optionalUser.get().isActivate()) {
+			throw new LoginException("User not in activation");
+		}
+		return  Utility.createToken(optionalUser.get().getId());
+		
 	}
 
 	@Override
 	public void forgotPassword(String emailId, String uri) throws RegistrationException, MessagingException {
-		System.out.println(emailId);
+
 		Optional<User> optionalUser = userRepository.findByEmailId(emailId);
 		if (!optionalUser.isPresent()) {
 			throw new RegistrationException("User doesnot exist Exception");
@@ -88,19 +117,16 @@ public class UserServiceImplementation implements UserService {
 		sendEmailMessage(uri, optionalUser);
 	}
 
-	public void sendEmailMessage(String uri, Optional<User> optionalUser) throws MessagingException {
+	private void sendEmailMessage(String uri, Optional<User> optionalUser) {
+		
 		String token = Utility.createToken(optionalUser.get().getId());
-
+		System.out.println();
 		MailDTO mailDTO = new MailDTO();
 
-		mailDTO.setId(optionalUser.get().getId());
 		mailDTO.setToMailAddress(optionalUser.get().getEmailId());
 		mailDTO.setSubject(" Verification mail");
-		mailDTO.setSalutation("Hi " + optionalUser.get().getFirstName());
-		mailDTO.setBody("Activate your accout click on this link: http://localhost:8080" + uri + "?token=" + token);
-		mailDTO.setMailSign("\nThank you \n SasiKala G \n Bridge Labz \n Mumbai");
-
-		userEmailSecurity.sendEmail(mailDTO);
+		mailDTO.setBody( environment.getProperty("link")+ uri + "?token=" + token);	
+		producer.produceMsg(mailDTO);
 	}
 
 	@Override
@@ -122,7 +148,7 @@ public class UserServiceImplementation implements UserService {
 	@Override
 	public void resetPassword(ResetPasswordDTO resetPasswordDTO, String token)
 			throws UserActivationException, RegistrationException {
-		Claims claim = Utility.parseJwt(token);
+		
 
 		if (!Utility.validatePassword(resetPasswordDTO.getNewPassword())) {
 			throw new RegistrationException("password not valid Exception");
@@ -131,7 +157,7 @@ public class UserServiceImplementation implements UserService {
 		if (!Utility.isPasswordMatch(resetPasswordDTO.getNewPassword(), resetPasswordDTO.getConfirmPassword())) {
 			throw new RegistrationException("confirm password mismatch with new password Exception");
 		}
-
+		Claims claim = Utility.parseJwt(token);
 		Optional<User> optionalUser = userRepository.findById(claim.getId());
 
 		if (!optionalUser.isPresent()) {

@@ -3,6 +3,8 @@ package com.bridgelabz.fundoonote.user.controllers;
 import javax.mail.MessagingException;
 import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,18 +52,18 @@ public class UserController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<ResponseDTO> loginUser(@RequestBody LoginDTO loginDTO, HttpServletRequest request)
-			throws LoginException, MessagingException, UserActivationException {
+	public ResponseEntity<ResponseDTO> loginUser(@RequestBody LoginDTO loginDTO,HttpServletResponse response )
+			throws LoginException, MessagingException, UserActivationException, RegistrationException {
 		logger.info("login  User");
 
-		userService.loginUser(loginDTO, request.getRequestURI());
-		ResponseDTO response = new ResponseDTO();
-		response.setMessage("Login successfully");
-		response.setStatus(3);
+		String token=userService.loginUser(loginDTO);
+		ResponseDTO responseDTO = new ResponseDTO();
+		responseDTO.setMessage("Login successfully");
+		responseDTO.setStatus(3);
+		response.setHeader("token", token);
+		logger.info("Response message:", responseDTO);
 
-		logger.info("Response message:", response);
-
-		return new ResponseEntity<>(response, HttpStatus.OK);
+		return new ResponseEntity<>(responseDTO, HttpStatus.OK);
 	}
 
 	@GetMapping("/activation")
@@ -75,6 +77,7 @@ public class UserController {
 		return new ResponseEntity<>(responseDTO, HttpStatus.OK);
 
 	}
+	
 	@PostMapping("/forgotPassword")
 	public ResponseEntity<ResponseDTO> forgotPassword(@RequestBody String emailId,HttpServletRequest request) throws RegistrationException, MessagingException{
 		logger.info("Reset the password");
@@ -95,4 +98,5 @@ public class UserController {
 		logger.info("Reset password done successfully");
 		return new ResponseEntity<>(responseDTO, HttpStatus.OK);
 	}
+	//public ResponseEntity<ResponseDTO> 
 }

@@ -1,24 +1,12 @@
 package com.bridgelabz.fundoonote.user.model;
 
 public class MailDTO {
-	private String id;
+	
 	private String toMailAddress;
 
 	private String subject;
 
-	private String salutation;
-
 	private String body;
-
-	private String mailSign;
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	public String getToMailAddress() {
 		return toMailAddress;
@@ -44,20 +32,5 @@ public class MailDTO {
 		this.body = body;
 	}
 
-	public String getSalutation() {
-		return salutation;
-	}
-
-	public void setSalutation(String salutation) {
-		this.salutation = salutation;
-	}
-
-	public String getMailSign() {
-		return mailSign;
-	}
-
-	public void setMailSign(String mailSign) {
-		this.mailSign = mailSign;
-	}
-
+	
 }

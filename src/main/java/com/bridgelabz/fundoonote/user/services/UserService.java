@@ -32,8 +32,9 @@ public interface UserService {
 	 * @throws LoginException
 	 * @throws MessagingException 
 	 * @throws UserActivationException 
+	 * @throws RegistrationException 
 	 */
-	void loginUser(LoginDTO loginDTO,String uri) throws LoginException, MessagingException, UserActivationException;
+	String loginUser(LoginDTO loginDTO) throws LoginException, MessagingException, UserActivationException, RegistrationException;
 	public void setActivationStatus(String token) throws UserActivationException;
 	public void resetPassword(ResetPasswordDTO resetPasswordDTO,String token) throws UserActivationException, RegistrationException;
 	public void forgotPassword(String emailId,String uri) throws RegistrationException, MessagingException;

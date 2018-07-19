@@ -22,47 +22,59 @@ public class Utility {
 	public static void isValidateAllFields(RegistrationDTO registerDTO) throws RegistrationException {
 		if (!validateEmailAddress(registerDTO.getEmailId())) {
 			throw new RegistrationException("emailid not valid  Exception");
-		} else if (!isValidUserName(registerDTO.getUserName())) {
+		} else if (!isValidUserName(registerDTO.getUserName()) ) {
 			throw new RegistrationException("UserName Not valid  Exception");
-		} else if (!validatePassword(registerDTO.getPassword())) {
+		} else if (!validatePassword(registerDTO.getPassword()) ) {
 			throw new RegistrationException("password not valid Exception");
-		} else if (!isValidMobileNumber(registerDTO.getMobileNumber())) {
+		} else if (!isValidMobileNumber(registerDTO.getMobileNumber()) ) {
 			throw new RegistrationException("mobilenumber not valid  Exception");
 		} else if (!isPasswordMatch(registerDTO.getPassword(), registerDTO.getConfirmPassword())) {
 			throw new RegistrationException("password mismatch exception");
 		}
 	}
 
-	public static boolean validateEmailAddress(String emailId) {
+	public static boolean validateEmailAddress(String emailId) throws RegistrationException {
 		Pattern emailNamePtrn = Pattern
 				.compile("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
-		Matcher mtch = emailNamePtrn.matcher(emailId);
-		return mtch.matches();
-
+		if (emailId != "" && emailId != null) {
+			Matcher mtch = emailNamePtrn.matcher(emailId);
+			return mtch.matches();
+		}
+		throw new RegistrationException("Email id should not be null");
 	}
 
-	public static boolean validatePassword(String password) {
+	public static boolean validatePassword(String password) throws RegistrationException {
 		Pattern pattern = Pattern.compile("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}");
-		Matcher matcher = pattern.matcher(password);
-		return matcher.matches();
-
+		if (password != "" && password != null) {
+			Matcher matcher = pattern.matcher(password);
+			return matcher.matches();
+		}
+		throw new RegistrationException("Password should not be null");
 	}
 
-	public static boolean isValidUserName(String userName) {
+	public static boolean isValidUserName(String userName) throws RegistrationException {
 		Pattern userNamePattern = Pattern.compile("^[a-z0-9_-]{6,14}$");
+		if(userName!=""&&userName!=null) {
 		Matcher matcher = userNamePattern.matcher(userName);
 		return matcher.matches();
+		}
+		throw new RegistrationException("username should not be null");
 
 	}
 
-	public static boolean isValidMobileNumber(String mobileNumber) {
+	public static boolean isValidMobileNumber(String mobileNumber) throws RegistrationException {
 		Pattern mobileNumberPattern = Pattern.compile("\\d{10}");
+		if(mobileNumber!=""&&mobileNumber!=null) {
 		Matcher matcher = mobileNumberPattern.matcher(mobileNumber);
-		return matcher.matches();
+		return matcher.matches();}
+		throw new RegistrationException("Mobile number should not be null");
 	}
 
-	public static boolean isPasswordMatch(String password, String confirmPassword) {
-		return password.equals(confirmPassword);
+	public static boolean isPasswordMatch(String password, String confirmPassword) throws RegistrationException {
+		if (confirmPassword != null&&confirmPassword!="") {
+			return password.equals(confirmPassword);
+		}
+		throw new RegistrationException("confirm password should not be null");
 	}
 
 	public String createToken(LoginDTO loginDTO) {

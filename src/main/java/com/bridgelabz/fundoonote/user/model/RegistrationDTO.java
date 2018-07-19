@@ -2,9 +2,9 @@ package com.bridgelabz.fundoonote.user.model;
 
 public class RegistrationDTO {
 	
-	private String emailId;
-
 	private String userName;
+	
+	private String emailId;
 
 	private String firstName;
 

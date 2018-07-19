@@ -14,23 +14,23 @@ import com.bridgelabz.fundoonote.user.model.ResponseDTO;
 
 @ControllerAdvice
 public class GlobalUserExceptionHandler {
-		
+
 	private final Logger logger = LoggerFactory.getLogger(GlobalUserExceptionHandler.class);
 
 	@ExceptionHandler(RegistrationException.class)
 	public ResponseEntity<ResponseDTO> handleRegistrationException(RegistrationException exception) {
-		logger.info("Error occured for: "+ exception.getMessage(), exception);
-		ResponseDTO response=new ResponseDTO();
-	    response.setMessage(exception.getMessage());
+		logger.info("Error occured for: " + exception.getMessage(), exception);
+		ResponseDTO response = new ResponseDTO();
+		response.setMessage(exception.getMessage());
 		response.setStatus(-2);
-        System.out.println("global");
+		// System.out.println("global");
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(LoginException.class)
 	public ResponseEntity<ResponseDTO> handleLoginActivationException(LoginException exception) {
 		logger.info("Error occured: " + exception.getMessage(), exception);
-		ResponseDTO response=new ResponseDTO();
+		ResponseDTO response = new ResponseDTO();
 		response.setMessage(exception.getMessage());
 		response.setStatus(-3);
 
@@ -41,13 +41,12 @@ public class GlobalUserExceptionHandler {
 	 * 
 	 * @param exception
 	 * @param request
-	 * @param reqId
 	 * @return
 	 */
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ResponseDTO> handleException(Exception exception, HttpServletRequest request) {
-		logger.error("Error occured for: "+ exception.getMessage(), exception);
-		ResponseDTO response=new ResponseDTO();
+		logger.error("Error occured for: " + exception.getMessage(), exception);
+		ResponseDTO response = new ResponseDTO();
 		response.setMessage("Something went wrong");
 		response.setStatus(-1);
 
