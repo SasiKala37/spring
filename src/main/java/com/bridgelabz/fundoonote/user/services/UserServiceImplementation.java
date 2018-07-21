@@ -57,9 +57,9 @@ public class UserServiceImplementation implements UserService {
 		
 		registerDTO.setPassword(encoder.encode(registerDTO.getPassword()));
 		
-		User user=new User();
-		user.setId("1");
-		user = modelMapper.map(registerDTO,User.class);
+		//User user=new User();
+		
+		User user = modelMapper.map(registerDTO,User.class);
 
 		/*user.setFirstName(registerDTO.getFirstName());
 		user.setLastName(registerDTO.getLastName());

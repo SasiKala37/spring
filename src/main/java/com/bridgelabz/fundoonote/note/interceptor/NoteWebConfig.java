@@ -1,15 +1,15 @@
-package com.bridgelabz.fundoonote.user.configuration;
+package com.bridgelabz.fundoonote.note.interceptor;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import com.bridgelabz.fundoonote.user.interceptors.LoggerInterceptor;
+import com.bridgelabz.fundoonote.note.interceptor.NoteInterceptor;
 
 @Configuration
-public class WebConfig implements WebMvcConfigurer{
+public class NoteWebConfig implements WebMvcConfigurer{
 	@Override
     public void addInterceptors(InterceptorRegistry registry) {   
-        registry.addInterceptor(new LoggerInterceptor()).addPathPatterns("/user/**");
+        registry.addInterceptor(new NoteInterceptor()).addPathPatterns("/note/**");
         
     }
 }

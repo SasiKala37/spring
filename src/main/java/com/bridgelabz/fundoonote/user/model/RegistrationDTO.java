@@ -1,7 +1,11 @@
 package com.bridgelabz.fundoonote.user.model;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class RegistrationDTO {
-	
+	@ApiModelProperty(hidden=true)
+	private String id;
+
 	private String userName;
 	
 	private String emailId;
@@ -18,6 +22,14 @@ public class RegistrationDTO {
 
 	public String getEmailId() {
 		return emailId;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public void setEmailId(String emailId) {

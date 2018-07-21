@@ -1,5 +1,6 @@
 package com.bridgelabz.fundoonote.note.services;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -8,100 +9,156 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bridgelabz.fundoonote.note.exceptions.NoteException;
+import com.bridgelabz.fundoonote.note.exceptions.NoteCreationException;
+import com.bridgelabz.fundoonote.note.exceptions.NoteNotFoundException;
+import com.bridgelabz.fundoonote.note.exceptions.UnAuthorizedException;
+import com.bridgelabz.fundoonote.note.exceptions.UserNotFoundException;
 import com.bridgelabz.fundoonote.note.model.NoteDTO;
+import com.bridgelabz.fundoonote.note.model.UpdateNoteDTO;
+import com.bridgelabz.fundoonote.note.model.CreateNoteDTO;
 import com.bridgelabz.fundoonote.note.model.Note;
 import com.bridgelabz.fundoonote.note.repository.NoteRepository;
-import com.bridgelabz.fundoonote.user.exceptions.RegistrationException;
 import com.bridgelabz.fundoonote.user.model.User;
 import com.bridgelabz.fundoonote.user.repository.UserRepository;
-import com.bridgelabz.fundoonote.user.util.Utility;
+import com.bridgelabz.fundoonote.note.util.Utility;
 
-
-import io.jsonwebtoken.Claims;
 @Service
 public class NoteServiceImplementation implements NoteService {
 	@Autowired
-	NoteRepository noteRepository;
+	private NoteRepository noteRepository;
 	@Autowired
-	UserRepository userRepository;
-	/*@Autowired
-	ModelMapper modelMapper;*/
-	
-	private String existUser(String token) throws RegistrationException {
-		Claims claim=Utility.parseJwt(token);
-		Optional<User> optionalUser=userRepository.findById(claim.getId());
-		if(!optionalUser.isPresent()) {
-			throw new RegistrationException("User not exist");
+	private UserRepository userRepository;
+	@Autowired
+	private ModelMapper modelMapper;
+
+	private Optional<Note> checkUserNote(String userId, String noteId)
+			throws UserNotFoundException, NoteNotFoundException, UnAuthorizedException {
+		Optional<User> optionalUser = userRepository.findById(userId);
+		if (!optionalUser.isPresent()) {
+			throw new UserNotFoundException("User not exist");
 		}
-		return claim.getId();
-		
+		Optional<Note> note = noteRepository.findById(noteId);
+		if (!optionalUser.isPresent()) {
+			throw new NoteNotFoundException("note not found exception");
+		}
+		if (note.get().getUserId().equals(userId)) {
+			throw new UnAuthorizedException("user doesnot has the note vice versa");
+		}
+		return note;
 	}
+
 	@Override
-	public void createNote(NoteDTO noteDTO,String token) throws RegistrationException, NoteException {
-		String userId=existUser(token);
-		if(noteDTO.getTitle()==""&&noteDTO.getDescription()==""&&noteDTO.getTitle()==null&&noteDTO.getDescription()==null) {
-			throw new NoteException("Empty note should not be save");
+	public NoteDTO createNote(CreateNoteDTO createNoteDTO, String userId)
+			throws UserNotFoundException, NoteCreationException, NoteNotFoundException, UnAuthorizedException {
+
+		Utility.validateTitleAndDesc(createNoteDTO.getTitle(), createNoteDTO.getDescription());
+
+		Optional<User> optionalUser = userRepository.findById(userId);
+		if (!optionalUser.isPresent()) {
+			throw new UserNotFoundException("User not exist");
 		}
-		
-		Note note=new Note();
-		Date date=new Date();
-		
+
+		Note note = new Note();
+
 		note.setUserId(userId);
-		note.setCreateAt(date);
-		note.setTrash(false);
-		note.setUpdateAt(date);
-		note.setRemindMe(date);
-		//modelMapper.map(note,NoteDTO.class);
-		note.setTitle(noteDTO.getTitle());
-		note.setDescription(noteDTO.getDescription());
+		note.setCreateAt(createNoteDTO.getCreateAt());
+		note.setUpdateAt(createNoteDTO.getCreateAt());
+		note.setRemindMe(createNoteDTO.getCreateAt());
+		note.setTitle(createNoteDTO.getTitle());
+		note.setDescription(createNoteDTO.getDescription());
 		noteRepository.save(note);
+		return modelMapper.map(note, NoteDTO.class);
+
 	}
 
 	@Override
-	public void deleteNote(String token,String noteId) throws RegistrationException, NoteException {
-		String userId=existUser(token);
-		Optional<User> user=userRepository.findById(userId);
-		Optional<Note> note=noteRepository.findById(noteId);
-		if(!user.isPresent()) {
-			throw new NoteException("User not found exception");
+	public void deleteNote(String userId, String noteId)
+			throws NoteNotFoundException, UnAuthorizedException, UserNotFoundException {
+
+		Optional<Note> note = checkUserNote(userId, noteId);
+		if (!note.get().isTrash()) {
+			throw new NoteNotFoundException("note do not trashed");
 		}
-		if(!note.isPresent()) {
-			throw new NoteException("note not found exception");
-		}
-		
+
 		noteRepository.deleteById(noteId);
-		
+
 	}
 
 	@Override
-	public void updateNote(String token,NoteDTO noteDTO,String noteId) throws RegistrationException, NoteException {
-		String userId=existUser(token);
-		Optional<User> user=userRepository.findById(userId);
-		Optional<Note> optionalNote=noteRepository.findById(noteId);
-		if(!user.isPresent()) {
-			throw new NoteException("User not found exception");
+	public void updateNote(String userId, UpdateNoteDTO updateNoteDTO)
+			throws NoteNotFoundException, UnAuthorizedException, UserNotFoundException, NoteCreationException {
+
+		Utility.validateTitleAndDesc(updateNoteDTO.getTitle(), updateNoteDTO.getDescription());
+		Optional<Note> optionalNote = checkUserNote(userId, updateNoteDTO.getNoteId());
+
+		if (optionalNote.get().isTrash()) {
+			throw new NoteNotFoundException("Note not found");
 		}
-		if(!optionalNote.isPresent()) {
-			throw new NoteException("note not found exception");
-		}
-		Note note=optionalNote.get();
-		//modelMapper.map(note,NoteDTO.class);
-		note.setTitle(noteDTO.getTitle());
-		note.setDescription(noteDTO.getDescription());
+
+		Note note = optionalNote.get();
+
+		note.setTitle(updateNoteDTO.getTitle());
+		note.setDescription(updateNoteDTO.getDescription());
+		note.setUpdateAt(updateNoteDTO.getUpdateAt());
 		noteRepository.save(note);
-			
+
 	}
 
 	@Override
-	public List<Note> readNote(String token) throws RegistrationException, NoteException {
-		String userId=existUser(token);
-		Optional<User> user=userRepository.findById(userId);
-		if(!user.isPresent()) {
-			throw new NoteException("User not found exception");
+	public List<NoteDTO> readNote(String userId) throws NoteNotFoundException, UserNotFoundException {
+
+		Optional<User> optionalUser = userRepository.findById(userId);
+		if (!optionalUser.isPresent()) {
+			throw new UserNotFoundException("User not exist");
 		}
-		return noteRepository.findAll();
+
+		List<Note> note = noteRepository.findAll();
+
+		List<NoteDTO> listNoteDTO = new ArrayList<>();
+		NoteDTO noteDTO = null;
+		for (int i = 0; i < note.size(); i++) {
+			noteDTO = modelMapper.map(note.get(i), NoteDTO.class);
+			listNoteDTO.add(noteDTO);
+		}
+
+		return listNoteDTO;
 	}
- 
-	
+
+	@Override
+	public void trashNote(String userId, String noteId)
+			throws NoteNotFoundException, UnAuthorizedException, UserNotFoundException {
+
+		Optional<Note> optionalNote = checkUserNote(userId, noteId);
+		
+		if (optionalNote.get().isTrash()) {
+
+			Note note = optionalNote.get();
+			note.setTrash(true);
+			noteRepository.save(note);
+		}
+
+	}
+
+	@Override
+	public void addRemainder(String userId, String noteId, Date remaindAt)
+			throws NoteNotFoundException, UnAuthorizedException, UserNotFoundException {
+
+		Optional<Note> optionalNote = checkUserNote(userId, noteId);
+		
+		Note note = optionalNote.get();
+		note.setRemindMe(remaindAt);
+		noteRepository.save(note);
+	}
+
+	@Override
+	public void removeRemainder(String userId, String noteId)
+			throws NoteNotFoundException, UnAuthorizedException, UserNotFoundException {
+
+		Optional<Note> optionalNote = checkUserNote(userId, noteId);
+		
+		Note note = optionalNote.get();
+		note.setRemindMe(null);
+		noteRepository.save(note);
+	}
+
 }
