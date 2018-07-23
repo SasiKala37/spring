@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bridgelabz.fundoonote.note.exceptions.DateNotProperSetException;
 import com.bridgelabz.fundoonote.note.exceptions.NoteCreationException;
 import com.bridgelabz.fundoonote.note.exceptions.NoteNotFoundException;
 import com.bridgelabz.fundoonote.note.exceptions.UnAuthorizedException;
@@ -24,10 +25,13 @@ import com.bridgelabz.fundoonote.note.util.Utility;
 
 @Service
 public class NoteServiceImplementation implements NoteService {
+
 	@Autowired
 	private NoteRepository noteRepository;
+
 	@Autowired
 	private UserRepository userRepository;
+
 	@Autowired
 	private ModelMapper modelMapper;
 
@@ -38,10 +42,10 @@ public class NoteServiceImplementation implements NoteService {
 			throw new UserNotFoundException("User not exist");
 		}
 		Optional<Note> note = noteRepository.findById(noteId);
-		if (!optionalUser.isPresent()) {
+		if (!note.isPresent()) {
 			throw new NoteNotFoundException("note not found exception");
 		}
-		if (note.get().getUserId().equals(userId)) {
+		if (!note.get().getUserId().equals(userId)) {
 			throw new UnAuthorizedException("user doesnot has the note vice versa");
 		}
 		return note;
@@ -63,44 +67,11 @@ public class NoteServiceImplementation implements NoteService {
 		note.setUserId(userId);
 		note.setCreateAt(createNoteDTO.getCreateAt());
 		note.setUpdateAt(createNoteDTO.getCreateAt());
-		note.setRemindMe(createNoteDTO.getCreateAt());
+		note.setRemindAt(createNoteDTO.getCreateAt());
 		note.setTitle(createNoteDTO.getTitle());
 		note.setDescription(createNoteDTO.getDescription());
 		noteRepository.save(note);
 		return modelMapper.map(note, NoteDTO.class);
-
-	}
-
-	@Override
-	public void deleteNote(String userId, String noteId)
-			throws NoteNotFoundException, UnAuthorizedException, UserNotFoundException {
-
-		Optional<Note> note = checkUserNote(userId, noteId);
-		if (!note.get().isTrash()) {
-			throw new NoteNotFoundException("note do not trashed");
-		}
-
-		noteRepository.deleteById(noteId);
-
-	}
-
-	@Override
-	public void updateNote(String userId, UpdateNoteDTO updateNoteDTO)
-			throws NoteNotFoundException, UnAuthorizedException, UserNotFoundException, NoteCreationException {
-
-		Utility.validateTitleAndDesc(updateNoteDTO.getTitle(), updateNoteDTO.getDescription());
-		Optional<Note> optionalNote = checkUserNote(userId, updateNoteDTO.getNoteId());
-
-		if (optionalNote.get().isTrash()) {
-			throw new NoteNotFoundException("Note not found");
-		}
-
-		Note note = optionalNote.get();
-
-		note.setTitle(updateNoteDTO.getTitle());
-		note.setDescription(updateNoteDTO.getDescription());
-		note.setUpdateAt(updateNoteDTO.getUpdateAt());
-		noteRepository.save(note);
 
 	}
 
@@ -125,28 +96,76 @@ public class NoteServiceImplementation implements NoteService {
 	}
 
 	@Override
-	public void trashNote(String userId, String noteId)
-			throws NoteNotFoundException, UnAuthorizedException, UserNotFoundException {
+	public void updateNote(String userId, UpdateNoteDTO updateNoteDTO)
+			throws NoteNotFoundException, UnAuthorizedException, UserNotFoundException, NoteCreationException {
 
-		Optional<Note> optionalNote = checkUserNote(userId, noteId);
-		
+		Utility.validateTitleAndDesc(updateNoteDTO.getTitle(), updateNoteDTO.getDescription());
+		Optional<Note> optionalNote = checkUserNote(userId, updateNoteDTO.getNoteId());
+
 		if (optionalNote.get().isTrash()) {
-
-			Note note = optionalNote.get();
-			note.setTrash(true);
-			noteRepository.save(note);
+			throw new NoteNotFoundException("Note not found");
 		}
+
+		Note note = optionalNote.get();
+
+		note.setTitle(updateNoteDTO.getTitle());
+		note.setDescription(updateNoteDTO.getDescription());
+		note.setUpdateAt(updateNoteDTO.getUpdateAt());
+		noteRepository.save(note);
 
 	}
 
 	@Override
-	public void addRemainder(String userId, String noteId, Date remaindAt)
+	public void deleteNote(String userId, String noteId)
 			throws NoteNotFoundException, UnAuthorizedException, UserNotFoundException {
 
 		Optional<Note> optionalNote = checkUserNote(userId, noteId);
-		
+
+		if (optionalNote.get().isTrash()) {
+			throw new NoteNotFoundException("note  not found Exception");
+		}
+
 		Note note = optionalNote.get();
-		note.setRemindMe(remaindAt);
+		note.setTrash(true);
+		noteRepository.save(note);
+
+	}
+
+	@Override
+	public void trashNote(String userId, String noteId)
+			throws NoteNotFoundException, UnAuthorizedException, UserNotFoundException {
+		Optional<Note> optionalNote = checkUserNote(userId, noteId);
+		if (optionalNote.get().isTrash()) {
+			noteRepository.deleteById(noteId);
+		}
+	}
+
+	@Override
+	public void restoreNote(String userId, String noteId)
+			throws UserNotFoundException, NoteNotFoundException, UnAuthorizedException {
+
+		Optional<Note> optionalNote = checkUserNote(userId, noteId);
+		if (optionalNote.get().isTrash()) {
+			Note note = optionalNote.get();
+			note.setTrash(false);
+
+			noteRepository.save(note);
+
+		}
+	}
+
+	@Override
+	public void addRemainder(String userId, String noteId, Date remaindAt)
+			throws NoteNotFoundException, UnAuthorizedException, UserNotFoundException, DateNotProperSetException {
+
+		Optional<Note> optionalNote = checkUserNote(userId, noteId);
+
+		if (remaindAt.before(new Date())) {
+			throw new DateNotProperSetException("set the date rather than todays date");
+		}
+
+		Note note = optionalNote.get();
+		note.setRemindAt(remaindAt);
 		noteRepository.save(note);
 	}
 
@@ -155,10 +174,113 @@ public class NoteServiceImplementation implements NoteService {
 			throws NoteNotFoundException, UnAuthorizedException, UserNotFoundException {
 
 		Optional<Note> optionalNote = checkUserNote(userId, noteId);
-		
+
 		Note note = optionalNote.get();
-		note.setRemindMe(null);
+		note.setRemindAt(null);
 		noteRepository.save(note);
 	}
+
+	@Override
+	public List<NoteDTO> getAllTrashNotes(String userId) throws UserNotFoundException {
+
+		Optional<User> user = userRepository.findById(userId);
+		if (!user.isPresent()) {
+			throw new UserNotFoundException("User not found");
+		}
+
+		List<Note> optionalNote = noteRepository.findAll();
+		List<NoteDTO> listNoteDTO = new ArrayList<>();
+
+		for (int i = 0; i < optionalNote.size(); i++) {
+			if (optionalNote.get(i).isTrash()) {
+				listNoteDTO.add(modelMapper.map(optionalNote.get(i), NoteDTO.class));
+			}
+		}
+		return listNoteDTO;
+	}
+
+	@Override
+	public void setArchiveNotes(String userId, String noteId)
+			throws UserNotFoundException, NoteNotFoundException, UnAuthorizedException {
+		Optional<Note> optionalNote = checkUserNote(userId, noteId);
+
+		if (optionalNote.get().isArchive()) {
+			throw new NoteNotFoundException("note  not found Exception");
+		}
+
+		Note note = optionalNote.get();
+		note.setArchive(true);
+		noteRepository.save(note);
+	}
+    @Override
+	public void unArchiveNotes(String userId, String noteId)
+			throws UserNotFoundException, NoteNotFoundException, UnAuthorizedException {
+		Optional<Note> optionalNote = checkUserNote(userId, noteId);
+
+		if (!optionalNote.get().isArchive()) {
+			Note note = optionalNote.get();
+			note.setArchive(true);
+			noteRepository.save(note);
+		}
+	}
+
+	@Override
+	public List<NoteDTO> getAllArchiveNotes(String userId) throws UserNotFoundException {
+		
+		Optional<User> user = userRepository.findById(userId);
+		if (!user.isPresent()) {
+			throw new UserNotFoundException("User not found");
+		}
+
+		List<Note> optionalNote = noteRepository.findAll();
+		List<NoteDTO> listNoteDTO = new ArrayList<>();
+
+		for (int i = 0; i < optionalNote.size(); i++) {
+			if (optionalNote.get(i).isArchive()) {
+				listNoteDTO.add(modelMapper.map(optionalNote.get(i), NoteDTO.class));
+			}
+		}
+		return listNoteDTO;
+
+	}
+
+	@Override
+	public void changeColor(String userId, String noteId, String color)
+			throws UserNotFoundException, NoteNotFoundException, UnAuthorizedException {
+
+		Optional<Note> optionalNote = checkUserNote(userId, noteId);
+
+		if (color == null || color.equals("")) {
+			optionalNote.get().setColor("white");
+			noteRepository.save(optionalNote.get());
+		} else {
+			optionalNote.get().setColor(color);
+			noteRepository.save(optionalNote.get());
+		}
+	}
+	@Override
+	public void pinNote(String userId,String noteId) throws UserNotFoundException, NoteNotFoundException, UnAuthorizedException {
+		
+		Optional<Note> optionalNote = checkUserNote(userId, noteId);
+		
+		if(!optionalNote.get().isPin()) {
+			optionalNote.get().setPin(true);
+			noteRepository.save(optionalNote.get());
+		}
+		
+	}
+	
+	@Override
+	public void unPinNote(String userId,String noteId) throws UserNotFoundException, NoteNotFoundException, UnAuthorizedException {
+		
+		Optional<Note> optionalNote = checkUserNote(userId, noteId);
+		
+		if(optionalNote.get().isPin()) {
+			optionalNote.get().setPin(true);
+			noteRepository.save(optionalNote.get());
+		}
+	}
+	
+	
 
 }

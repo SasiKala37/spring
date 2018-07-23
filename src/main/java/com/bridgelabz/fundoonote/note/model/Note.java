@@ -9,21 +9,47 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Note {
 	@Id
 	private String noteId;
-	private Date createAt;
-	private Date updateAt;
-	private Date remindMe;
 	private String userId;
 	private String title;
 	private String description;
-	private boolean isTrash;
-	
+	private String color;
+	private Date createAt;
+	private Date updateAt;
+	private Date remindAt;
+	private boolean pin;
+	private boolean trash;
+	private boolean archive;
+
+	public boolean isPin() {
+		return pin;
+	}
+
+	public void setPin(boolean isPin) {
+		this.pin = isPin;
+	}
+
+	public boolean isArchive() {
+		return archive;
+	}
+
+	public void setArchive(boolean isArchive) {
+		this.archive = isArchive;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
 
 	public boolean isTrash() {
-		return isTrash;
+		return trash;
 	}
 
 	public void setTrash(boolean isTrash) {
-		this.isTrash = isTrash;
+		this.trash = isTrash;
 	}
 
 	public String getTitle() {
@@ -66,12 +92,12 @@ public class Note {
 		this.updateAt = updateAt;
 	}
 
-	public Date getRemindMe() {
-		return remindMe;
+	public Date getRemindAt() {
+		return remindAt;
 	}
 
-	public void setRemindMe(Date remindMe) {
-		this.remindMe = remindMe;
+	public void setRemindAt(Date remindAt) {
+		this.remindAt = remindAt;
 	}
 
 	public String getDescription() {

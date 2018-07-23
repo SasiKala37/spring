@@ -3,12 +3,59 @@ package com.bridgelabz.fundoonote.note.model;
 import java.util.Date;
 
 public class NoteDTO {
+
 	private String noteId;
-	private Date createAt;
 	private String userId;
 	private String title;
 	private String description;
-	private boolean isTrash;
+	private String color;
+	private Date createAt;
+	private Date updateAt;
+	private Date remindAt;
+	private boolean trash;
+	private boolean archive;
+	private boolean pin;
+	
+
+	public boolean isPin() {
+		return pin;
+	}
+
+	public void setPin(boolean pin) {
+		this.pin = pin;
+	}
+
+	public Date getUpdateAt() {
+		return updateAt;
+	}
+
+	public void setUpdateAt(Date updateAt) {
+		this.updateAt = updateAt;
+	}
+
+	public Date getRemindAt() {
+		return remindAt;
+	}
+
+	public void setRemindAt(Date remindAt) {
+		this.remindAt = remindAt;
+	}
+
+	public boolean isArchive() {
+		return archive;
+	}
+
+	public void setArchive(boolean isArchive) {
+		this.archive = isArchive;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
 
 	public String getTitle() {
 		return title;
@@ -42,22 +89,6 @@ public class NoteDTO {
 		this.createAt = createAt;
 	}
 
-	/*public Date getUpdateAt() {
-		return updateAt;
-	}
-
-	public void setUpdateAt(Date updateAt) {
-		this.updateAt = updateAt;
-	}
-
-	public Date getRemindMe() {
-		return remindMe;
-	}
-
-	public void setRemindMe(Date remindMe) {
-		this.remindMe = remindMe;
-	}
-*/
 	public String getUserId() {
 		return userId;
 	}
@@ -67,12 +98,11 @@ public class NoteDTO {
 	}
 
 	public boolean isTrash() {
-		return isTrash;
+		return trash;
 	}
 
 	public void setTrash(boolean isTrash) {
-		this.isTrash = isTrash;
+		this.trash = isTrash;
 	}
 
-	
 }
