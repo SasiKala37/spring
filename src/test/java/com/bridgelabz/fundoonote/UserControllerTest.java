@@ -33,7 +33,7 @@ public class UserControllerTest {
 	}
 
 	Date date=new Date();
-	// @Test
+	@Test
 	public void verifyRegisterUser() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.post("/user/register").contentType(MediaType.APPLICATION_JSON).content(
 				"{ \"emailId\": \"sasikalag37@gmail.com\", \"userName\" : \"sasikala\", \"password\" : \"Sasi@123\" , \"confirmPassword\": \"Sasi@123\", \"firstName\" : \" sasi\", \"lastName\" : \"kala\",\"mobileNumber\": \"7032466169\"}")
@@ -87,12 +87,29 @@ public class UserControllerTest {
 
 	/******************** NoteController test cases ***********************/
 	
-	@Test
+	//@Test
 	public void testCreateNote() throws Exception{
 		mockMvc.perform(MockMvcRequestBuilders.post("/user/resetPassword").contentType(MediaType.APPLICATION_JSON)
-				.content("{ \"title\": \"mamta is a good girl\", \"description\" : \"opinion\", \"color\" : \"blue\" , \"userId\": \"5b5586e0bcd27952c652cf1d\", \"archive\" : false, \"trash\" : false,\"pin\": false, \"createAt\": date, \"updateAt\": date, \"remindAt\": date)}")
+				.content("{ \"title\": \"opinion\", \"description\" : \"mamta is a good girl\", \"color\" : \"blue\" , \"userId\": \"5b5586e0bcd27952c652cf1d\", \"archive\" : false, \"trash\" : false,\"pin\": false, \"createAt\": date, \"updateAt\": date, \"remindAt\": date)}")
 				.accept(MediaType.APPLICATION_JSON))
-	
+				
+				.andExpect(jsonPath("$.title").exists())
+				.andExpect(jsonPath("$.description").exists())
+				.andExpect(jsonPath("$.color").exists())
+				.andExpect(jsonPath("$.userId").exists())
+				.andExpect(jsonPath("$.archive").exists())
+				.andExpect(jsonPath("$.pin").exists())
+				.andExpect(jsonPath("$.trash").exists())
+				.andExpect(jsonPath("createAt").exists())
+				.andExpect(jsonPath("updateAt").exists())
+				.andExpect(jsonPath("remindAt").exists())
+				
+				.andExpect(jsonPath("$.title").value("opinion"))
+				.andExpect(jsonPath("$.description").value("mamta is a good girl"))
+				.andExpect(jsonPath("$.color").value("blue"))
+				.andExpect(jsonPath("$.userId").value("5b5586e0bcd27952c652cf1d"))
+				;
+				
+				
 	}
-
 }

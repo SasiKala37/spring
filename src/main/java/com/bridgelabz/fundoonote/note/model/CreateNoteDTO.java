@@ -6,6 +6,15 @@ public class CreateNoteDTO {
 	private String title;
 	private String description;
 	private Date createAt;
+	private String labelName;
+
+	public String getLabelName() {
+		return labelName;
+	}
+
+	public void setLabelName(String labelName) {
+		this.labelName = labelName;
+	}
 
 	public String getTitle() {
 		return title;

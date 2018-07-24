@@ -19,11 +19,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bridgelabz.fundoonote.note.exceptions.DateNotProperSetException;
+import com.bridgelabz.fundoonote.note.exceptions.LabelNotFoundException;
 import com.bridgelabz.fundoonote.note.exceptions.NoteCreationException;
 import com.bridgelabz.fundoonote.note.exceptions.NoteNotFoundException;
 import com.bridgelabz.fundoonote.note.exceptions.UnAuthorizedException;
 import com.bridgelabz.fundoonote.note.exceptions.UserNotFoundException;
 import com.bridgelabz.fundoonote.note.model.CreateNoteDTO;
+import com.bridgelabz.fundoonote.note.model.LabelDTO;
 import com.bridgelabz.fundoonote.note.model.NoteDTO;
 import com.bridgelabz.fundoonote.note.model.UpdateNoteDTO;
 import com.bridgelabz.fundoonote.note.services.NoteService;
@@ -338,7 +340,7 @@ public class NoteController {
 
 		return new ResponseEntity<>(responseDTO, HttpStatus.OK);
 	}
-	
+
 	/**
 	 * @param noteId
 	 * @param token
@@ -360,6 +362,35 @@ public class NoteController {
 
 		return new ResponseEntity<>(responseDTO, HttpStatus.OK);
 	}
-	
+
+	@PostMapping("/createLabel")
+	public ResponseEntity<String> createLabel(@RequestAttribute("token") String token, @RequestBody String labelName,
+			HttpServletRequest request) throws LabelNotFoundException, UserNotFoundException {
+
+		String labelname = noteService.createLabel((String) request.getAttribute("token"), labelName);
+
+		return new ResponseEntity<>(labelname, HttpStatus.OK);
+
+	}
+
+	@GetMapping("/getAllLabels")
+	public ResponseEntity<List<LabelDTO>> getAllLabels(@RequestAttribute("token") String token,
+			HttpServletRequest request) throws UserNotFoundException {
+		List<LabelDTO> labelDTOs = noteService.getAllLabels((String) request.getAttribute("token"));
+		return new ResponseEntity<>(labelDTOs, HttpStatus.OK);
+	}
+
+	@DeleteMapping("/deleteLabel/{labelName}")
+	public ResponseEntity<ResponseDTO> deleteLabel(@PathVariable("labelName") String labelName,
+			@RequestAttribute("token") String token, HttpServletRequest request)
+			throws UserNotFoundException, LabelNotFoundException, UnAuthorizedException {
+
+		noteService.deleteLabel((String) request.getAttribute("token"), labelName);
+		ResponseDTO responseDTO = new ResponseDTO();
+		responseDTO.setMessage("delete the label");
+		responseDTO.setStatus(1);
+		return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+
+	}
 
 }
