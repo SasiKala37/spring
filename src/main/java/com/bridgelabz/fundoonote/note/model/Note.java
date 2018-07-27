@@ -1,9 +1,14 @@
 package com.bridgelabz.fundoonote.note.model;
 
 import java.util.Date;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.bridgelabz.fundoonote.note.exceptions.UserNotFoundException;
+import com.bridgelabz.fundoonote.note.services.NoteService;
 
 @Document(collection = "notes")
 public class Note {
@@ -19,6 +24,16 @@ public class Note {
 	private boolean pin;
 	private boolean trash;
 	private boolean archive;
+	private List<LabelDTO> labelList;
+	
+	
+	public List<LabelDTO> getLabelList() {
+		return labelList;
+	}
+
+	public void setLabelList(List<LabelDTO> label) {
+		this.labelList = label;
+	}
 
 	public boolean isPin() {
 		return pin;

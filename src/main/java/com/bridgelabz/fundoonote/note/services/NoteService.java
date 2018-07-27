@@ -3,14 +3,14 @@ package com.bridgelabz.fundoonote.note.services;
 import java.util.Date;
 import java.util.List;
 
-import com.bridgelabz.fundoonote.note.exceptions.DateNotProperSetException;
+import com.bridgelabz.fundoonote.note.exceptions.DateNotProperlySetException;
+import com.bridgelabz.fundoonote.note.exceptions.LabelNameAlreadyInUseException;
 import com.bridgelabz.fundoonote.note.exceptions.LabelNotFoundException;
 import com.bridgelabz.fundoonote.note.exceptions.NoteCreationException;
 import com.bridgelabz.fundoonote.note.exceptions.NoteNotFoundException;
 import com.bridgelabz.fundoonote.note.exceptions.UnAuthorizedException;
 import com.bridgelabz.fundoonote.note.exceptions.UserNotFoundException;
 import com.bridgelabz.fundoonote.note.model.CreateNoteDTO;
-import com.bridgelabz.fundoonote.note.model.Label;
 import com.bridgelabz.fundoonote.note.model.LabelDTO;
 import com.bridgelabz.fundoonote.note.model.NoteDTO;
 import com.bridgelabz.fundoonote.note.model.UpdateNoteDTO;
@@ -19,7 +19,7 @@ import com.bridgelabz.fundoonote.note.model.UpdateNoteDTO;
 public interface NoteService {
 
 	NoteDTO createNote(CreateNoteDTO createNoteDTO, String token)
-			throws NoteNotFoundException, UnAuthorizedException, UserNotFoundException, NoteCreationException;
+			throws NoteNotFoundException, UnAuthorizedException, UserNotFoundException, NoteCreationException, LabelNotFoundException;
 
 	void deleteNote(String token, String noteId)
 			throws NoteNotFoundException, UnAuthorizedException, UserNotFoundException;
@@ -33,7 +33,7 @@ public interface NoteService {
 			throws NoteNotFoundException, UnAuthorizedException, UserNotFoundException;
 
 	public void addRemainder(String token, String noteId, Date remaindAt)
-			throws NoteNotFoundException, UnAuthorizedException, UserNotFoundException, DateNotProperSetException;
+			throws NoteNotFoundException, UnAuthorizedException, UserNotFoundException, DateNotProperlySetException;
 
 	public void removeRemainder(String token, String noteId)
 			throws NoteNotFoundException, UnAuthorizedException, UserNotFoundException;
@@ -60,11 +60,18 @@ public interface NoteService {
 	public void unPinNote(String userId, String noteId)
 			throws UserNotFoundException, NoteNotFoundException, UnAuthorizedException;
 
-	public String createLabel(String userId, String labelName) throws LabelNotFoundException, UserNotFoundException;
+	public String createLabel(String userId, String labelName)
+			throws LabelNotFoundException, UserNotFoundException, LabelNameAlreadyInUseException;
 
 	public List<LabelDTO> getAllLabels(String userId) throws UserNotFoundException;
 
 	public void deleteLabel(String userId, String labelName)
-			throws UserNotFoundException, LabelNotFoundException, UnAuthorizedException;
+			throws UserNotFoundException, LabelNotFoundException, UnAuthorizedException, NoteNotFoundException;
+
+	public void addLabel(String userId, LabelDTO labelDTO, String noteId)
+			throws UserNotFoundException, NoteNotFoundException, UnAuthorizedException, LabelNameAlreadyInUseException;
+	
+	public void renameLabel(String userId, String oldLabelName,String newLabelName)
+			throws UserNotFoundException, LabelNotFoundException, UnAuthorizedException ;
 
 }

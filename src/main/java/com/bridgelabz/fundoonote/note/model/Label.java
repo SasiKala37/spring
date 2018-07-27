@@ -9,7 +9,6 @@ public class Label {
 	@Id
 	private String labelId;
 	private String labelName;
-	private String noteId;
 	private String userId;
 
 	public String getUserId() {
@@ -36,12 +35,5 @@ public class Label {
 		this.labelName = labelName;
 	}
 
-	public String getNoteId() {
-		return noteId;
-	}
-
-	public void setNoteId(String noteId) {
-		this.noteId = noteId;
-	}
 
 }

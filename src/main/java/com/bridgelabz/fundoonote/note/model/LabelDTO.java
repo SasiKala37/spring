@@ -4,7 +4,7 @@ public class LabelDTO {
 
 	private String labelId;
 	private String labelName;
-	private String noteId;
+
 
 	public String getLabelId() {
 		return labelId;
@@ -22,12 +22,12 @@ public class LabelDTO {
 		this.labelName = labelName;
 	}
 
-	public String getNoteId() {
+	/*public String getNoteId() {
 		return noteId;
 	}
 
 	public void setNoteId(String noteId) {
 		this.noteId = noteId;
 	}
-
+*/
 }

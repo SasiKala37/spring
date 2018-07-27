@@ -1,21 +1,33 @@
 package com.bridgelabz.fundoonote;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -32,8 +44,9 @@ public class UserControllerTest {
 
 	}
 
-	Date date=new Date();
-	@Test
+	Date date = new Date();
+
+	//@Test
 	public void verifyRegisterUser() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.post("/user/register").contentType(MediaType.APPLICATION_JSON).content(
 				"{ \"emailId\": \"sasikalag37@gmail.com\", \"userName\" : \"sasikala\", \"password\" : \"Sasi@123\" , \"confirmPassword\": \"Sasi@123\", \"firstName\" : \" sasi\", \"lastName\" : \"kala\",\"mobileNumber\": \"7032466169\"}")
@@ -86,30 +99,54 @@ public class UserControllerTest {
 	}
 
 	/******************** NoteController test cases ***********************/
-	
-	//@Test
-	public void testCreateNote() throws Exception{
-		mockMvc.perform(MockMvcRequestBuilders.post("/user/resetPassword").contentType(MediaType.APPLICATION_JSON)
-				.content("{ \"title\": \"opinion\", \"description\" : \"mamta is a good girl\", \"color\" : \"blue\" , \"userId\": \"5b5586e0bcd27952c652cf1d\", \"archive\" : false, \"trash\" : false,\"pin\": false, \"createAt\": date, \"updateAt\": date, \"remindAt\": date)}")
-				.accept(MediaType.APPLICATION_JSON))
-				
-				.andExpect(jsonPath("$.title").exists())
-				.andExpect(jsonPath("$.description").exists())
-				.andExpect(jsonPath("$.color").exists())
-				.andExpect(jsonPath("$.userId").exists())
-				.andExpect(jsonPath("$.archive").exists())
-				.andExpect(jsonPath("$.pin").exists())
-				.andExpect(jsonPath("$.trash").exists())
-				.andExpect(jsonPath("createAt").exists())
-				.andExpect(jsonPath("updateAt").exists())
-				.andExpect(jsonPath("remindAt").exists())
-				
-				.andExpect(jsonPath("$.title").value("opinion"))
-				.andExpect(jsonPath("$.description").value("mamta is a good girl"))
-				.andExpect(jsonPath("$.color").value("blue"))
-				.andExpect(jsonPath("$.userId").value("5b5586e0bcd27952c652cf1d"))
-				;
-				
-				
+
+/*	@MockBean
+	private NoteService noteService;
+*/
+	/*// @Test
+	public void testCreateNote() throws Exception {
+		List<Label> list = new ArrayList<>();
+		Label mockLabel = new Label();
+		mockLabel.setLabelId("");
+		mockLabel.setLabelName("");
+		mockLabel.setUserId("");
+		list.add(mockLabel);
+
+		NoteDTO mockNote = new NoteDTO();
+		mockNote.setNoteId("");
+		mockNote.setArchive(false);
+		mockNote.setColor("white");
+		mockNote.setCreateAt(date);
+		mockNote.setDescription("dhfgdjfghfk");
+		mockNote.setLabelList(list);
+		mockNote.setPin(false);
+		mockNote.setRemindAt(date);
+		mockNote.setTitle("fhdsjgh");
+		mockNote.setTrash(false);
+		mockNote.setUpdateAt(date);
+		String userId = "5b56";
+		mockNote.setUserId("");
+
+		String inputJson = this.mapToJson(mockNote);
+		
+		Mockito.when(noteService.createNote(Mockito.any(CreateNoteDTO.class), userId)).thenReturn(mockNote);
+		
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.
+				post("/note/create").
+				accept(MediaType.APPLICATION_JSON)
+				.content(inputJson).contentType(MediaType.APPLICATION_JSON);
+		
+		MvcResult result=mockMvc.perform(requestBuilder).andReturn();
+		
+		MockHttpServletResponse response=result.getResponse();
+		String outputJson=response.getContentAsString();
+		assertThat(outputJson).isEqualTo(inputJson);
+		
+		assertEquals(HttpStatus.OK.value(), response.getStatus());
 	}
+
+	public String mapToJson(Object object) throws JsonProcessingException {
+		ObjectMapper objectMapper = new ObjectMapper();
+		return objectMapper.writeValueAsString(object);
+	}*/
 }

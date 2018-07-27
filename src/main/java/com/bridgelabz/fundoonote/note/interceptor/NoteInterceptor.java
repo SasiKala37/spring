@@ -21,7 +21,7 @@ public class NoteInterceptor extends HandlerInterceptorAdapter{
 		String tokenId= request.getHeader("token");
 		Claims userId=Utility.parseJwt(tokenId);
 		request.setAttribute("token", userId.getId());
-		//System.out.println("UserId:"+userId.getId());
+		System.out.println("UserId:"+userId.getId());
 		logger.info("Before handling the request"+request.getRequestURI());
 		
 		return true;

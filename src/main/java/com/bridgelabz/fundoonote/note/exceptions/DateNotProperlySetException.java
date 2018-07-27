@@ -1,10 +1,10 @@
 package com.bridgelabz.fundoonote.note.exceptions;
 
-public class DateNotProperSetException extends Exception {
+public class DateNotProperlySetException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
-	public DateNotProperSetException(String message) {
+	public DateNotProperlySetException(String message) {
 		super(message);
 	}
 }
