@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bridgelabz.fundoonote.note.exceptions.DateNotProperlySetException;
-import com.bridgelabz.fundoonote.note.exceptions.LabelNameAlreadyInUseException;
+import com.bridgelabz.fundoonote.note.exceptions.LabelNameAlreadyExistException;
 import com.bridgelabz.fundoonote.note.exceptions.LabelNotFoundException;
 import com.bridgelabz.fundoonote.note.exceptions.NoteCreationException;
 import com.bridgelabz.fundoonote.note.exceptions.NoteNotFoundException;
@@ -61,8 +61,8 @@ public class NoteServiceImplementation implements NoteService {
 	}
 
 	@Override
-	public NoteDTO createNote(CreateNoteDTO createNoteDTO, String userId)
-			throws UserNotFoundException, NoteCreationException, NoteNotFoundException, UnAuthorizedException, LabelNotFoundException {
+	public NoteDTO createNote(CreateNoteDTO createNoteDTO, String userId) throws UserNotFoundException,
+			NoteCreationException, NoteNotFoundException, UnAuthorizedException, LabelNotFoundException {
 
 		Utility.validateTitleAndDesc(createNoteDTO.getTitle(), createNoteDTO.getDescription());
 
@@ -77,34 +77,49 @@ public class NoteServiceImplementation implements NoteService {
 		note.setCreateAt(date);
 		note.setUpdateAt(date);
 		note.setRemindAt(createNoteDTO.getRemindAt());
-		
-		note.setArchive(createNoteDTO.isArchive());
-		
-		note.setColor(createNoteDTO.getColor());
-		note.setPin(createNoteDTO.isPin());
+
+		if (createNoteDTO.isArchive()) {
+			note.setArchive(true);
+		} else {
+			note.setArchive(false);
+		}
+
+		if (createNoteDTO.isPin()) {
+			note.setPin(true);
+		} else {
+			note.setPin(false);
+		}
+
+		if (createNoteDTO.getColor() == "String" || createNoteDTO.getColor().trim().length() == 0
+				|| createNoteDTO.getColor() == null) {
+			note.setColor("white");
+		} else {
+			note.setColor(createNoteDTO.getColor());
+		}
+
 		note.setTitle(createNoteDTO.getTitle());
 		note.setDescription(createNoteDTO.getDescription());
-		
-		List<String> labelList=createNoteDTO.getLadelList();
-		
-		if(labelList!=null) {
-			for(int i=0;i<labelList.size();i++) {
-				Optional<Label> existedLabels=labelRepository.findByLabelNameAndUserId(labelList.get(i), userId);
-				if(!existedLabels.isPresent()) {
+
+		List<String> labelList = createNoteDTO.getLadelList();
+
+		if (labelList != null) {
+			for (int i = 0; i < labelList.size(); i++) {
+				Optional<Label> existedLabels = labelRepository.findByLabelNameAndUserId(labelList.get(i), userId);
+				if (!existedLabels.isPresent()) {
 					throw new LabelNotFoundException("User doesnot have labels");
 				}
-				List<LabelDTO> list=new ArrayList<>();
-				if(labelList.get(i).trim().length()!=0&&labelList.get(i)!=null){
-					LabelDTO labelDTO=new LabelDTO();
+				List<LabelDTO> list = new ArrayList<>();
+				if (labelList.get(i).trim().length() != 0 && labelList.get(i) != null) {
+					LabelDTO labelDTO = new LabelDTO();
 					labelDTO.setLabelId(existedLabels.get().getLabelId());
 					labelDTO.setLabelName(existedLabels.get().getLabelName());
 					list.add(labelDTO);
 					note.setLabelList(list);
 				}
 			}
-			
+
 		}
-		
+
 		noteRepository.save(note);
 		return modelMapper.map(note, NoteDTO.class);
 
@@ -181,16 +196,14 @@ public class NoteServiceImplementation implements NoteService {
 
 		Optional<Note> optionalNote = checkUserNote(userId, noteId);
 		if (optionalNote.get().isTrash()) {
-			Note note = optionalNote.get();
-			note.setTrash(false);
 
-			noteRepository.save(note);
-
+			optionalNote.get().setTrash(false);
+			noteRepository.save(optionalNote.get());
 		}
 	}
 
 	@Override
-	public void addRemainder(String userId, String noteId, Date remaindAt)
+	public void addReminder(String userId, String noteId, Date remaindAt)
 			throws NoteNotFoundException, UnAuthorizedException, UserNotFoundException, DateNotProperlySetException {
 
 		Optional<Note> optionalNote = checkUserNote(userId, noteId);
@@ -199,20 +212,20 @@ public class NoteServiceImplementation implements NoteService {
 			throw new DateNotProperlySetException("set the date rather than todays date");
 		}
 
-		Note note = optionalNote.get();
-		note.setRemindAt(remaindAt);
-		noteRepository.save(note);
+		optionalNote.get().setRemindAt(remaindAt);
+
+		noteRepository.save(optionalNote.get());
 	}
 
 	@Override
-	public void removeRemainder(String userId, String noteId)
+	public void removeReminder(String userId, String noteId)
 			throws NoteNotFoundException, UnAuthorizedException, UserNotFoundException {
 
 		Optional<Note> optionalNote = checkUserNote(userId, noteId);
 
-		Note note = optionalNote.get();
-		note.setRemindAt(null);
-		noteRepository.save(note);
+		optionalNote.get().setRemindAt(null);
+
+		noteRepository.save(optionalNote.get());
 	}
 
 	@Override
@@ -235,29 +248,27 @@ public class NoteServiceImplementation implements NoteService {
 	}
 
 	@Override
-	public void setArchiveNotes(String userId, String noteId)
+	public void setArchiveNotes(String userId, String noteId, boolean isArchive)
 			throws UserNotFoundException, NoteNotFoundException, UnAuthorizedException {
+
 		Optional<Note> optionalNote = checkUserNote(userId, noteId);
-
-		if (optionalNote.get().isArchive()) {
-			throw new NoteNotFoundException("note  not found Exception");
+		if (optionalNote.get().isPin()) {
+			optionalNote.get().setPin(false);
 		}
+		optionalNote.get().setArchive(isArchive);
 
-		Note note = optionalNote.get();
-		note.setArchive(true);
-		noteRepository.save(note);
+		noteRepository.save(optionalNote.get());
 	}
 
 	@Override
-	public void unArchiveNotes(String userId, String noteId)
+	public void unArchiveNotes(String userId, String noteId, boolean isArchive)
 			throws UserNotFoundException, NoteNotFoundException, UnAuthorizedException {
+
 		Optional<Note> optionalNote = checkUserNote(userId, noteId);
 
-		if (!optionalNote.get().isArchive()) {
-			Note note = optionalNote.get();
-			note.setArchive(true);
-			noteRepository.save(note);
-		}
+		optionalNote.get().setArchive(isArchive);
+
+		noteRepository.save(optionalNote.get());
 	}
 
 	@Override
@@ -296,38 +307,43 @@ public class NoteServiceImplementation implements NoteService {
 	}
 
 	@Override
-	public void pinNote(String userId, String noteId)
+	public void pinNote(String userId, String noteId, boolean isPin)
 			throws UserNotFoundException, NoteNotFoundException, UnAuthorizedException {
 
 		Optional<Note> optionalNote = checkUserNote(userId, noteId);
 
-		if (!optionalNote.get().isPin()) {
-			optionalNote.get().setPin(true);
-			noteRepository.save(optionalNote.get());
+		if (optionalNote.get().isArchive()) {
+			optionalNote.get().setArchive(false);
 		}
+		if (isPin) {
+			optionalNote.get().setPin(true);
+		} else {
+			optionalNote.get().setPin(false);
+		}
+		noteRepository.save(optionalNote.get());
 
 	}
 
 	@Override
-	public void unPinNote(String userId, String noteId)
+	public void unPinNote(String userId, String noteId,boolean isPin)
 			throws UserNotFoundException, NoteNotFoundException, UnAuthorizedException {
 
 		Optional<Note> optionalNote = checkUserNote(userId, noteId);
 
-		if (optionalNote.get().isPin()) {
-			optionalNote.get().setPin(true);
+		if (isPin) {
+			optionalNote.get().setPin(false);
 			noteRepository.save(optionalNote.get());
 		}
 	}
 
 	@Override
 	public String createLabel(String userId, String labelName)
-			throws UserNotFoundException, LabelNameAlreadyInUseException {
+			throws UserNotFoundException, LabelNameAlreadyExistException {
 
 		Optional<Label> optionalLabel = labelRepository.findByLabelName(labelName);
 
 		if (optionalLabel.isPresent()) {
-			throw new LabelNameAlreadyInUseException("LabelName already in use");
+			throw new LabelNameAlreadyExistException("LabelName already in use");// change the name of exception
 		}
 
 		Label label = new Label();
@@ -338,113 +354,125 @@ public class NoteServiceImplementation implements NoteService {
 		return labelName;
 	}
 
+	List<LabelDTO> labelList = new ArrayList<>();
+
 	@Override
-	public void addLabel(String userId, LabelDTO labelDTO, String noteId)
-			throws UserNotFoundException, NoteNotFoundException, UnAuthorizedException, LabelNameAlreadyInUseException {
-		//Label label=modelMapper.map(labelDTO, Label.class);
-		List<LabelDTO> labelList = new ArrayList<>();
+	public void addLabel(String userId, String labelId, String noteId) throws UserNotFoundException,
+			NoteNotFoundException, UnAuthorizedException, LabelNameAlreadyExistException, LabelNotFoundException {
+
+		LabelDTO labelDTO = null;
 		Optional<Note> optionalNote = checkUserNote(userId, noteId);
 
-		Optional<Label> optionalLabel = labelRepository.findByLabelNameAndUserId(labelDTO.getLabelName(), userId);
-
-		//for (int i = 0; i < optionalLabel.size(); i++) {
-
-			if (optionalLabel.get().getLabelName().equals(labelDTO.getLabelName())) {
-
-				optionalLabel.get().setLabelId(labelDTO.getLabelId());
-				optionalLabel.get().setUserId(userId);
-				labelRepository.save(optionalLabel.get());
-
-				labelList.add(labelDTO);
-				optionalNote.get().setLabelList(labelList);
-				noteRepository.save(optionalNote.get());
-
-			//}
+		Optional<Label> optionalLabel = labelRepository.findByLabelNameAndUserId(labelId, userId);
+		if (!optionalLabel.isPresent()) {
+			throw new LabelNotFoundException("Label not found");
 		}
+
+		labelDTO = new LabelDTO();
+		labelDTO.setLabelId(optionalLabel.get().getLabelId());
+		labelDTO.setLabelName(optionalLabel.get().getLabelName());
+		labelList.add(labelDTO);
+		optionalNote.get().setLabelList(labelList);
+		noteRepository.save(optionalNote.get());
 
 	}
 
 	@Override
 	public List<LabelDTO> getAllLabels(String userId) throws UserNotFoundException {
-		List<LabelDTO> labelList = new ArrayList<>();
+
+		List<LabelDTO> list = new ArrayList<>();
 		Optional<User> optionalUser = userRepository.findById(userId);
 		if (!optionalUser.isPresent()) {
 			throw new UserNotFoundException("User not found");
 		}
 
-		List<Label> optionalLabel = labelRepository.findByUserId(userId);
+		List<Label> optionalLabels = labelRepository.findByUserId(userId);
 
-		for (int i = 0; i < optionalLabel.size(); i++) {
+		for (int i = 0; i < optionalLabels.size(); i++) {
 
-			labelList.add(modelMapper.map(optionalLabel.get(i), LabelDTO.class));
+			list.add(modelMapper.map(optionalLabels.get(i), LabelDTO.class));
 
 		}
 
-		return labelList;
+		return list;
 	}
 
 	@Override
-	public void deleteLabel(String userId, String labelName)
+	public void deleteLabel(String userId, String labelId)
 			throws UserNotFoundException, LabelNotFoundException, UnAuthorizedException {
 
-		Optional<User> optionalUser = userRepository.findById(userId);
-		if (!optionalUser.isPresent()) {
-			throw new UserNotFoundException("User not found");
+		List<Note> optionalNote = noteRepository.findAllByUserId(userId);
+
+		Optional<Label> optionalLabel = labelRepository.findByLabelNameAndUserId(labelId, userId);
+
+		if (!optionalLabel.isPresent()) {
+			throw new LabelNotFoundException("Label not found");
 		}
+		labelRepository.delete(optionalLabel.get());
+		for (int i = 0; i < optionalNote.size(); i++) {
 
-		List<Note> optionalNote = noteRepository.findAllByQuery(userId,labelName);
+			for (int j = 0; j < optionalNote.get(i).getLabelList().size(); j++) {
 
-		Optional<Label> optionalLabelList = labelRepository.findByLabelNameAndUserId(labelName, userId);
+				if (optionalNote.get(i).getLabelList().get(j).getLabelId().equals(optionalLabel.get().getLabelId())) {
 
-		//for (int i = 0; i < optionalLabelList.size(); i++) {
+					optionalNote.get(i).getLabelList().remove(j);
+					noteRepository.save(optionalNote.get(i));
 
-			for (int j = 0; j < optionalNote.get(j).getLabelList().size(); j++) {
-				// match the given userId with note userId
-				if (optionalNote.get(j).getUserId().equals(optionalUser.get().getId())) {
-					// match the given labelListId with noteList labelId
-					if (optionalNote.get(j).getLabelList().get(j).getLabelId()
-							.equals(optionalLabelList.get().getLabelId())) {
-
-						noteRepository.deleteById(optionalNote.get(j).getLabelList().get(j).getLabelId());
-						labelRepository.delete(optionalLabelList.get());
-					}
 				}
 			}
-		//}
+		}
 
 	}
 
 	@Override
-	public void renameLabel(String userId, String oldLabelName, String newLabelName)
+	public void renameLabel(String userId, String labelId, String newLabelName)
 			throws UserNotFoundException, LabelNotFoundException, UnAuthorizedException {
 
-		Optional<User> optionalUser = userRepository.findById(userId);
-		if (!optionalUser.isPresent()) {
-			throw new UserNotFoundException("User not found");
+		List<Note> optionalNotes = noteRepository.findAllByUserId(userId);
+
+		Optional<Label> optionalLabel = labelRepository.findByLabelNameAndUserId(labelId, userId);
+		if (!optionalLabel.isPresent()) {
+			throw new LabelNotFoundException("Label not found");
 		}
+		optionalLabel.get().setLabelName(newLabelName);
+		labelRepository.save(optionalLabel.get());
 
-		List<Note> optionalNote = noteRepository.findByUserIdAndLabelListInLabelName(userId, oldLabelName);
+		for (int i = 0; i < optionalNotes.size(); i++) {
 
-		Optional<Label> optionalLabelList = labelRepository.findByLabelNameAndUserId(oldLabelName, userId);
+			for (int j = 0; j < optionalNotes.get(j).getLabelList().size(); j++) {
 
-		//for (int i = 0; i < optionalLabelList.size(); i++) {
+				if (optionalNotes.get(j).getLabelList().get(j).getLabelId().equals(optionalLabel.get().getLabelId())) {
 
-			for (int j = 0; j < optionalNote.get(j).getLabelList().size(); j++) {
-				// match the given userId with note userId & match the given labelListId with
-				// noteList labelId
-
-				if (optionalNote.get(j).getUserId().equals(userId) && optionalNote.get(j).getLabelList().get(j)
-						.getLabelId().equals(optionalLabelList.get().getLabelId())) {
-
-					optionalNote.get(j).getLabelList().get(j).setLabelName(newLabelName);
-					noteRepository.save(optionalNote.get(j));
-
-					optionalLabelList.get().setLabelName(newLabelName);
-					labelRepository.save(optionalLabelList.get());
+					optionalNotes.get(i).getLabelList().get(j).setLabelName(newLabelName);
+					noteRepository.save(optionalNotes.get(i));
 
 				}
 			}
-		//}
+
+		}
+
+	}
+
+	@Override
+	public void removeNoteLabel(String userId, String noteId, String labelId) throws Exception {
+
+		Optional<Note> optionalNote = checkUserNote(userId, noteId);
+		Optional<Label> optionalLabel = labelRepository.findByLabelNameAndUserId(labelId, userId);
+		Note note = optionalNote.get();
+
+		if (!optionalLabel.isPresent()) {
+			throw new LabelNotFoundException("Label not found");
+		}
+
+		for (int i = 0; i < note.getLabelList().size(); i++) {
+
+			if (note.getLabelList().get(i).getLabelId().equals(optionalLabel.get().getLabelId())) {
+
+				note.getLabelList().remove(i);
+				noteRepository.save(note);
+				break;
+			}
+		}
 
 	}
 

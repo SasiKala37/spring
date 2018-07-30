@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.bridgelabz.fundoonote.note.exceptions.DateNotProperlySetException;
-import com.bridgelabz.fundoonote.note.exceptions.LabelNameAlreadyInUseException;
+import com.bridgelabz.fundoonote.note.exceptions.LabelNameAlreadyExistException;
 import com.bridgelabz.fundoonote.note.exceptions.LabelNotFoundException;
 import com.bridgelabz.fundoonote.note.exceptions.NoteCreationException;
 import com.bridgelabz.fundoonote.note.exceptions.NoteNotFoundException;
@@ -18,8 +18,8 @@ import com.bridgelabz.fundoonote.note.model.UpdateNoteDTO;
 //@Service
 public interface NoteService {
 
-	NoteDTO createNote(CreateNoteDTO createNoteDTO, String token)
-			throws NoteNotFoundException, UnAuthorizedException, UserNotFoundException, NoteCreationException, LabelNotFoundException;
+	NoteDTO createNote(CreateNoteDTO createNoteDTO, String token) throws NoteNotFoundException, UnAuthorizedException,
+			UserNotFoundException, NoteCreationException, LabelNotFoundException;
 
 	void deleteNote(String token, String noteId)
 			throws NoteNotFoundException, UnAuthorizedException, UserNotFoundException;
@@ -32,10 +32,10 @@ public interface NoteService {
 	public void trashNote(String token, String noteId)
 			throws NoteNotFoundException, UnAuthorizedException, UserNotFoundException;
 
-	public void addRemainder(String token, String noteId, Date remaindAt)
+	public void addReminder(String token, String noteId, Date remaindAt)
 			throws NoteNotFoundException, UnAuthorizedException, UserNotFoundException, DateNotProperlySetException;
 
-	public void removeRemainder(String token, String noteId)
+	public void removeReminder(String token, String noteId)
 			throws NoteNotFoundException, UnAuthorizedException, UserNotFoundException;
 
 	public void restoreNote(String userId, String noteId)
@@ -45,33 +45,36 @@ public interface NoteService {
 
 	public List<NoteDTO> getAllArchiveNotes(String userId) throws UserNotFoundException;
 
-	public void setArchiveNotes(String userId, String noteId)
+	public void setArchiveNotes(String userId, String noteId, boolean isArchive)
 			throws UserNotFoundException, NoteNotFoundException, UnAuthorizedException;
 
 	public void changeColor(String userId, String noteId, String color)
 			throws UserNotFoundException, NoteNotFoundException, UnAuthorizedException;
 
-	public void unArchiveNotes(String userId, String noteId)
+	public void unArchiveNotes(String userId, String noteId, boolean isArchive)
 			throws UserNotFoundException, NoteNotFoundException, UnAuthorizedException;
 
-	public void pinNote(String userId, String noteId)
+	public void pinNote(String userId, String noteId, boolean isPin)
 			throws UserNotFoundException, NoteNotFoundException, UnAuthorizedException;
 
-	public void unPinNote(String userId, String noteId)
+	public void unPinNote(String userId, String noteId,boolean isPin)
 			throws UserNotFoundException, NoteNotFoundException, UnAuthorizedException;
 
 	public String createLabel(String userId, String labelName)
-			throws LabelNotFoundException, UserNotFoundException, LabelNameAlreadyInUseException;
+			throws LabelNotFoundException, UserNotFoundException, LabelNameAlreadyExistException;
 
 	public List<LabelDTO> getAllLabels(String userId) throws UserNotFoundException;
 
 	public void deleteLabel(String userId, String labelName)
 			throws UserNotFoundException, LabelNotFoundException, UnAuthorizedException, NoteNotFoundException;
 
-	public void addLabel(String userId, LabelDTO labelDTO, String noteId)
-			throws UserNotFoundException, NoteNotFoundException, UnAuthorizedException, LabelNameAlreadyInUseException;
-	
-	public void renameLabel(String userId, String oldLabelName,String newLabelName)
-			throws UserNotFoundException, LabelNotFoundException, UnAuthorizedException ;
+	public void addLabel(String userId, String labelName, String noteId) throws UserNotFoundException,
+			NoteNotFoundException, UnAuthorizedException, LabelNameAlreadyExistException, LabelNotFoundException;
+
+	public void renameLabel(String userId, String oldLabelName, String newLabelName)
+			throws UserNotFoundException, LabelNotFoundException, UnAuthorizedException;
+
+	public void removeNoteLabel(String userId, String noteId, String labelName) throws UserNotFoundException,
+			LabelNotFoundException, NoteNotFoundException, UnAuthorizedException, Exception;
 
 }

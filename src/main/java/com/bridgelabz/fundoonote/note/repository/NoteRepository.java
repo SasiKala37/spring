@@ -15,14 +15,13 @@ import com.bridgelabz.fundoonote.note.model.Note;
 public interface NoteRepository extends MongoRepository<Note, String> {
 	public void save(Optional<Note> note);
 
-	@Query(value = "{noteId:?0, labelList.labelName:?1}")
-	List<Note> findByUserIdAndLabelListInLabelName(String userId, String labelNmae);
-
 	Optional<Note> findByNoteId(String noteId);
 	
-	@Query(value="{'userId' : ?0,'labelList.labelName': ?1}")
-	 List<Note> findAllByQuery(String userId, String labelName);
-
-	//@Query(value = "{'userId'=?0,'labelList.labelName'=?1}")
-	//Optional<Label> findByUserIdAndLabelName(String userId, String labelName);
+	List<Note> findAllByUserId(String userId);
+	/*@Query(value = "{noteId:?0, labelList.labelName:?1}")
+	List<Note> findByUserIdAndLabelListInLabelName(String userId, String labelNmae);*/
+	
+	/*@Query(value="{'userId' : ?0,'labelList.labelName': ?1}")
+	 List<Note> findAllByQuery(String userId, String labelName);*/
+	
 }

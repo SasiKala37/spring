@@ -18,10 +18,10 @@ public class NoteInterceptor extends HandlerInterceptorAdapter{
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
 		
-		String tokenId= request.getHeader("token");
-		Claims userId=Utility.parseJwt(tokenId);
-		request.setAttribute("token", userId.getId());
-		System.out.println("UserId:"+userId.getId());
+		String tokenId= request.getHeader("userId");
+		Claims id=Utility.parseJwt(tokenId);
+		request.setAttribute("userId", id.getId());
+		System.out.println("UserId:"+id.getId());
 		logger.info("Before handling the request"+request.getRequestURI());
 		
 		return true;

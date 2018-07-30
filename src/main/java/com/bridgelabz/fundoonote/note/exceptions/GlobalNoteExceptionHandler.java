@@ -95,8 +95,8 @@ public class GlobalNoteExceptionHandler {
 	 * @param exception
 	 * @return
 	 */
-	@ExceptionHandler(LabelNameAlreadyInUseException.class)
-	public ResponseEntity<ResponseDTO> handleLabelNameAlreadyInUseException(LabelNameAlreadyInUseException exception) {
+	@ExceptionHandler(LabelNameAlreadyExistException.class)
+	public ResponseEntity<ResponseDTO> handleLabelNameAlreadyInUseException(LabelNameAlreadyExistException exception) {
 
 		logger.info("Error occured for: " + exception.getMessage(), exception);
 		ResponseDTO response = new ResponseDTO();
